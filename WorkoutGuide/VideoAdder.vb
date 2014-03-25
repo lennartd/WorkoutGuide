@@ -22,6 +22,7 @@ Public Class VideoAdder
         Next
 
         author = author.Split("""")(0)
+        author = author.Trim
 
         'Get description
         Dim splitStringDescriptionStart As String() = New String() {"<meta name=""description"" content="""}

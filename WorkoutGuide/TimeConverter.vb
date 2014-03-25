@@ -7,7 +7,7 @@
             Return timeSpan.Minutes.ToString.PadLeft(2, "0"c) & ":" & timeSpan.Seconds.ToString.PadLeft(2, "0"c)
         Else
             Return timeSpan.Hours.ToString.PadLeft(2, "0"c) & ":" & timeSpan.Minutes.ToString.PadLeft(2, "0"c) & _
-           +":" & timeSpan.Seconds.ToString.PadLeft(2, "0"c)
+           ":" & timeSpan.Seconds.ToString.PadLeft(2, "0"c)
         End If
 
     End Function

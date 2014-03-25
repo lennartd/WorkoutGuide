@@ -6,6 +6,35 @@
 
     <Window.Resources>
         <local:TimeConverter x:Key="TimeConv"></local:TimeConverter>
+
+        <Style x:Key="HyperlinkLikeButton" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <ControlTemplate.Resources>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="TextDecorations" Value="Underline" />
+                                    </Style>
+                                </ControlTemplate.Resources>
+                                <ContentPresenter />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -34,16 +63,16 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0">
-                    <Label VerticalAlignment="Center" Margin="5" FontSize="20" FontWeight="Bold" >Suchergebnisse:</Label>
+                <Grid Grid.Row="0" Margin="5">
+                    <Label VerticalAlignment="Center" FontSize="20" FontWeight="Bold" >Suchergebnisse:</Label>
                 </Grid>
 
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="1" Margin="5">
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5">
                         <ItemsControl Name="ItemsControlVideos" ItemsSource="{Binding Videos}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid>
+                                    <Grid Margin="0,10">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="1*"></ColumnDefinition>
                                             <ColumnDefinition Width="3*"></ColumnDefinition>
@@ -52,18 +81,40 @@
                                         <Grid Grid.Column="0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="*"></RowDefinition>
-                                                <RowDefinition Height="10"></RowDefinition>
+                                                <RowDefinition Height="30"></RowDefinition>
                                             </Grid.RowDefinitions>
 
-                                            <Image Grid.Row="0" Source="{Binding VideoImage}"></Image>
-                                            <Label Grid.Row="1" Content="{Binding VideoDuration, Converter={StaticResource TimeConv}}"></Label>
+                                            <Button Grid.Row="0" Name="ButtonVideoImage" Click="ButtonVideoImage_Click">
+                                                <Button.Template>
+                                                    <ControlTemplate>
+                                                        <Image Source="{Binding VideoImage}"
+                                                       Cursor="Hand"></Image>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                 
+                                            </Button>
+                                           
+                                            
+                                            <Label Grid.Row="1" Content="{Binding VideoDuration, Converter={StaticResource TimeConv}}"
+                                                   HorizontalAlignment="Right" VerticalAlignment="Top"></Label>
                                         </Grid>
 
-                                        <StackPanel Grid.Column="1" Orientation="Vertical" >
-                                            <TextBlock Text="{Binding VideoTitle}"></TextBlock>
-                                            <TextBlock Text="{Binding VideoAuthor, StringFormat='von {0}'}"></TextBlock>
-                                            <TextBlock Text="{Binding VideoDescription}"></TextBlock>
-                                        </StackPanel>
+                                        <Viewbox Grid.Column="1" VerticalAlignment="Top">
+                                            <StackPanel  Orientation="Vertical" Margin="5"
+                                                         Width="500">
+                                                <Button Name="ButtonVideoTitle" Click="ButtonVideoTitle_Click"
+                                                        Style="{StaticResource HyperlinkLikeButton}">
+                                                    <TextBlock Text="{Binding VideoTitle}"
+                                                       FontWeight="Bold" FontSize="15"
+                                                           TextWrapping="Wrap"></TextBlock>
+                                                </Button>
+                                               
+                                                <TextBlock Text="{Binding VideoAuthor, StringFormat='von {0}'}"
+                                                           FontSize="13" FontWeight="Bold" TextWrapping="Wrap"></TextBlock>
+                                                <TextBlock Text="{Binding VideoDescription}"
+                                                       FontStyle="Italic" TextWrapping="Wrap"></TextBlock>
+                                            </StackPanel>
+                                        </Viewbox>
                                     </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
