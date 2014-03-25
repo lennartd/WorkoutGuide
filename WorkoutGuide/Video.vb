@@ -2,7 +2,6 @@
 
 Public Class Video
     Implements INotifyPropertyChanged
-
     Public Sub New(ByVal url As String, ByVal title As String, ByVal author As String, ByVal description As String, ByVal duration As Integer, _
                    ByVal image As Windows.Media.ImageSource)
         _url = url : _title = title : _author = author : _description = description : _duration = duration : _image = image
@@ -73,7 +72,7 @@ Public Class Video
             RaiseProp("VideoImage")
         End Set
     End Property
- 
+
 
     Public Sub RaiseProp(ByVal propertie As String)
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertie))

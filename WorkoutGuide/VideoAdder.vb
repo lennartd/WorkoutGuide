@@ -37,7 +37,7 @@ Public Class VideoAdder
         Dim splitStringImageUrlEnd As String() = New String() {""">"}
         Dim imageUrl As String = sourceString.Split(splitStringImageUrlStart, StringSplitOptions.None)(1).Split(splitStringImageUrlEnd, StringSplitOptions.None)(0)
 
-        Dim newVideo As New Video(url, title, author, description, duration, GetImage(url))
+        Dim newVideo As New Video(url, title, author, description, duration, GetImage(imageUrl))
         AllVideos.Videos.Add(newVideo)
 
     End Sub
@@ -54,3 +54,4 @@ Public Class VideoAdder
         Return Nothing
     End Function
 End Class
+
