@@ -32,6 +32,7 @@ Imports System.Windows.Media.TextFormatting
 Imports System.Windows.Navigation
 Imports System.Windows.Shapes
 Imports System.Windows.Shell
+Imports WorkoutGuide
 
 
 '''<summary>
@@ -41,6 +42,13 @@ Imports System.Windows.Shell
 Partial Public Class MainWindow
     Inherits System.Windows.Window
     Implements System.Windows.Markup.IComponentConnector
+    
+    
+    #ExternalSource("..\..\MainWindow.xaml",43)
+    <System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")>  _
+    Friend WithEvents ItemsControlVideos As System.Windows.Controls.ItemsControl
+    
+    #End ExternalSource
     
     Private _contentLoaded As Boolean
     
@@ -69,6 +77,10 @@ Partial Public Class MainWindow
      System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity"),  _
      System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")>  _
     Sub System_Windows_Markup_IComponentConnector_Connect(ByVal connectionId As Integer, ByVal target As Object) Implements System.Windows.Markup.IComponentConnector.Connect
+        If (connectionId = 1) Then
+            Me.ItemsControlVideos = CType(target,System.Windows.Controls.ItemsControl)
+            Return
+        End If
         Me._contentLoaded = true
     End Sub
 End Class
