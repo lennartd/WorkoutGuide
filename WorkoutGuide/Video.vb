@@ -6,6 +6,9 @@ Public Class Video
                    ByVal image As Windows.Media.ImageSource, ByVal dateAdded As Date, ByVal rating As Integer, ByVal difficulty As String, ByVal categories As Category)
         _url = url : _title = title : _author = author : _description = description : _duration = duration : _image = image : _dateAdded = dateAdded
         _rating = rating : _difficulty = difficulty : _categories = categories
+
+
+        CreateOpenLinkCommand()
     End Sub
 
     Private _url As String
@@ -123,6 +126,35 @@ Public Class Video
     End Property
 
 
+    #Region "Commands"
+        Private _openLinkCommand As ICommand
+        Public Property OpenLinkCommand() As ICommand
+            Get
+                Return _openLinkCommand
+            End Get
+            Set(ByVal value As ICommand)
+                _openLinkCommand = value
+                RaiseProp("OpenLinkCommand")
+            End Set
+        End Property
+
+        Private Function CanExecuteOpenLinkCommand() As Boolean
+            If VideoUrl = Nothing
+                Return False
+            End If
+            Return True
+        End Function
+
+        Private Sub CreateOpenLinkCommand
+            OpenLinkCommand = New RelayCommand(AddressOf openLinkExecute, AddressOf CanExecuteOpenLinkCommand)
+        End Sub
+
+        Private Sub OpenLinkExecute
+            Process.Start(VideoUrl)
+        End Sub
+    #End Region
+
+   
 
     Public Sub RaiseProp(ByVal propertie As String)
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertie))

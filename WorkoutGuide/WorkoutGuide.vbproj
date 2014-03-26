@@ -70,6 +70,7 @@
     <Compile Include="RatingControl.xaml.vb">
       <DependentUpon>RatingControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RelayCommand.vb" />
     <Compile Include="TimeConverter.vb" />
     <Compile Include="Video.vb" />
     <Compile Include="ViewModel.vb" />

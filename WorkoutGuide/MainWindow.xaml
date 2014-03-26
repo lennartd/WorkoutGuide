@@ -240,14 +240,14 @@
                                                 <RowDefinition Height="30"></RowDefinition>
                                             </Grid.RowDefinitions>
 
-                                            <Button Grid.Row="0" Name="ButtonVideoImage" Click="ButtonVideoImage_Click">
+                                            <Button Grid.Row="0" Name="ButtonVideoImage"    
+                                                Command="{Binding OpenLinkCommand}">
                                                 <Button.Template>
                                                     <ControlTemplate>
                                                         <Image Source="{Binding VideoImage}"
                                                        Cursor="Hand"></Image>
                                                     </ControlTemplate>
                                                 </Button.Template>
-                                 
                                             </Button>
 
                                             <Grid Grid.Row="1" Margin="0,3,0,0" >
@@ -266,7 +266,7 @@
                                         <Viewbox Grid.Column="1" VerticalAlignment="Top">
                                             <StackPanel  Orientation="Vertical" Margin="5"
                                                          Width="500">
-                                                <Button Name="ButtonVideoTitle" Click="ButtonVideoTitle_Click"
+                                                <Button Name="ButtonVideoTitle" Command="{Binding OpenLinkCommand}"
                                                         Style="{StaticResource HyperlinkLikeButton}">
                                                     <TextBlock Text="{Binding VideoTitle}"
                                                        FontWeight="Bold" FontSize="15"

@@ -15,13 +15,6 @@ Public Class ViewModel
         End Set
     End Property
 
-
-      Public Sub RaiseProp(ByVal propertie As String)
-        RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertie))
-    End Sub
-
-
-
     Public Sub AddVideo(ByVal url As String, ByVal dateAdded As Date, ByVal rating As Integer, ByVal difficulty As String, ByVal categories As Category)
 
         Dim sourceString As String = New WebClient().DownloadString(url)
@@ -63,7 +56,6 @@ Public Class ViewModel
 
     End Sub
 
-
     Private Function GetImage(ByVal pictureurl As String) As Windows.Media.ImageSource
 
         Dim webUri As New Uri(pictureurl)
@@ -78,6 +70,15 @@ Public Class ViewModel
     Private Function CreateSpecialCharacters(ByVal originalText As String) As String
         Return originalText.Replace("&#39;", "'")
     End Function
+
+
+
+
+
+
+    Public Sub RaiseProp(ByVal propertie As String)
+        RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertie))
+    End Sub
 
     Public Event PropertyChanged(sender As Object, e As PropertyChangedEventArgs) Implements INotifyPropertyChanged.PropertyChanged
 End Class
