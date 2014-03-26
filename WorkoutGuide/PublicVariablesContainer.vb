@@ -1,5 +1,5 @@
 ﻿Module PublicVariablesContainer
 
-    Public AllVideos As VideosList
+    Public MainViewModel As ViewModel
 
 End Module

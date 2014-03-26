@@ -1,6 +1,26 @@
 ﻿Imports System.Net
+Imports System.ComponentModel
 
-Public Class VideoAdder
+Public Class ViewModel
+    Implements INotifyPropertyChanged
+
+    Private _allVideos As VideosList
+    Public Property AllVideos() As VideosList
+        Get
+            Return _AllVideos
+        End Get
+        Set(ByVal value As VideosList)
+            _AllVideos = value
+            RaiseProp("VideosList")
+        End Set
+    End Property
+
+
+      Public Sub RaiseProp(ByVal propertie As String)
+        RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertie))
+    End Sub
+
+
 
     Public Sub AddVideo(ByVal url As String, ByVal dateAdded As Date, ByVal rating As Integer, ByVal difficulty As String)
 
@@ -55,9 +75,10 @@ Public Class VideoAdder
         Return Nothing
     End Function
 
-    Public Function CreateSpecialCharacters(ByVal originalText As String) As String
+    Private Function CreateSpecialCharacters(ByVal originalText As String) As String
         Return originalText.Replace("&#39;", "'")
     End Function
 
+    Public Event PropertyChanged(sender As Object, e As PropertyChangedEventArgs) Implements INotifyPropertyChanged.PropertyChanged
 End Class
 
