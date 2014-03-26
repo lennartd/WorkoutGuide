@@ -22,7 +22,7 @@ Public Class ViewModel
 
 
 
-    Public Sub AddVideo(ByVal url As String, ByVal dateAdded As Date, ByVal rating As Integer, ByVal difficulty As String)
+    Public Sub AddVideo(ByVal url As String, ByVal dateAdded As Date, ByVal rating As Integer, ByVal difficulty As String, ByVal categories As Category)
 
         Dim sourceString As String = New WebClient().DownloadString(url)
 
@@ -58,7 +58,7 @@ Public Class ViewModel
         Dim splitStringImageUrlEnd As String() = New String() {""">"}
         Dim imageUrl As String = sourceString.Split(splitStringImageUrlStart, StringSplitOptions.None)(1).Split(splitStringImageUrlEnd, StringSplitOptions.None)(0)
 
-        Dim newVideo As New Video(url, title, author, description, duration, GetImage(imageUrl), dateAdded, rating, difficulty)
+        Dim newVideo As New Video(url, title, author, description, duration, GetImage(imageUrl), dateAdded, rating, difficulty, categories)
         AllVideos.Videos.Add(newVideo)
 
     End Sub

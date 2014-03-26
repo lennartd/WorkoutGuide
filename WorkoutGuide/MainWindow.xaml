@@ -175,9 +175,9 @@
                                     <TreeViewItem Header="Bauch" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
                                     <TreeViewItem Header="Bizeps" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
                                     <TreeViewItem Header="Trizeps" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
-                                    <TreeViewItem Header="Schultern" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
+                                    <TreeViewItem Header="Schulter" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
                                     <TreeViewItem Header="Rücken" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
-                                    <TreeViewItem Header="Oberschenkel" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
+                                    <TreeViewItem Header="Bein" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
                                 </TreeViewItem>
                                 <TreeViewItem Header="Ausdauer" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
                                 <TreeViewItem Header="Schnelligkeit" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
