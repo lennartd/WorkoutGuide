@@ -14,3 +14,5 @@ C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuid
 C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\WorkoutGuide.g.resources
 C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\WorkoutGuide.Resources.resources
 C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\WorkoutGuide.vbproj.GenerateResource.Cache
+C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\RatingControl.baml
+C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\RatingControl.g.vb

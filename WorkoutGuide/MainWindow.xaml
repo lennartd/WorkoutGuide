@@ -2,7 +2,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
           xmlns:local="clr-namespace:WorkoutGuide"
-    Title="MainWindow" Height="656.225" Width="937">
+    Title="MainWindow" Height="746.225" Width="937">
 
     <Window.Resources>
         <local:TimeConverter x:Key="TimeConv"></local:TimeConverter>
@@ -35,6 +35,97 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="CheckBoxTreeviewItemHeader" TargetType="{x:Type TreeViewItem}">
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=IsExpanded}"
+                                      Margin="2" Tag="{Binding}"
+                                      Cursor="Hand">
+                            </CheckBox>
+                            <TextBlock Text="{Binding}"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Margin">
+                <Setter.Value>1,1,5,0</Setter.Value>
+            </Setter>
+            <Setter Property="FontSize">
+                <Setter.Value>15</Setter.Value>
+            </Setter>
+            <Setter Property="Focusable" Value="False"/>
+        
+        </Style>
+
+        <Style x:Key="CheckBoxTreeviewItem" TargetType="{x:Type TreeViewItem}">
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Margin="2" Tag="{Binding}" IsChecked="True" Cursor="Hand">
+                            </CheckBox>
+                            <TextBlock Text="{Binding}"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Margin">
+                <Setter.Value>1,1,5,0</Setter.Value>
+            </Setter>
+            <Setter Property="FontSize">
+                <Setter.Value>15</Setter.Value>
+            </Setter>
+            <Setter Property="Focusable" Value="False"/>
+        </Style>
+        
+        <Style x:Key="RadioButtonListBox" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton Margin="2"
+                                         IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"
+                                         ></RadioButton>
+                            <TextBlock Text="{Binding}"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Margin">
+                <Setter.Value>1,1,5,0</Setter.Value>
+            </Setter>
+            <Setter Property="FontSize">
+                <Setter.Value>15</Setter.Value>
+            </Setter>
+            <Setter Property="Cursor" Value="Hand"></Setter>
+        </Style>
+        
+        <Style x:Key="SubHeadings" TargetType="{x:Type Label}">
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextDecorations="Underline"></TextBlock>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontSize">
+                <Setter.Value>20</Setter.Value>
+            </Setter>
+            <Setter Property="FontWeight">
+                <Setter.Value>DemiBold</Setter.Value>
+            </Setter>
+            <Setter Property="Margin">
+                <Setter.Value>10,0,0,0</Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="Headings" TargetType="{x:Type Label}">
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="FontSize" Value="40"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -49,27 +140,90 @@
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="1.1*"></ColumnDefinition>
                 <ColumnDefinition Width="3*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="15*"></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="Black">
+                    <Viewbox HorizontalAlignment="Left">
+                        <Label Style="{StaticResource Headings}">Suche:</Label>
+                    </Viewbox>
+                </Border>
+ 
                 <!--Search categories-->
+                <Border Grid.Row="1" BorderThickness="0,0,1,0" BorderBrush="Gray">
+                    <Viewbox Grid.Row="1" HorizontalAlignment="Left" Margin="5">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Style="{StaticResource SubHeadings}">Stichwort:</Label>
+                                <TextBox Width="150" Margin="5" FontSize="15"></TextBox>
+                            </StackPanel>
+
+                            <Label Style="{StaticResource SubHeadings}">Kategorie:</Label>
+                            <TreeView Name="TreeViewCategories" x:FieldModifier="Private" Margin="10">
+                                <TreeViewItem Header="Muskelaufbau" Style="{StaticResource CheckBoxTreeviewItemHeader}" IsExpanded="True">
+                                    <TreeViewItem Header="Brust" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
+                                    <TreeViewItem Header="Bauch" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
+                                    <TreeViewItem Header="Bizeps" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
+                                    <TreeViewItem Header="Trizeps" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
+                                    <TreeViewItem Header="Schultern" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
+                                    <TreeViewItem Header="Rücken" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
+                                    <TreeViewItem Header="Oberschenkel" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
+                                </TreeViewItem>
+                                <TreeViewItem Header="Ausdauer" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
+                                <TreeViewItem Header="Schnelligkeit" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
+                            </TreeView>
+                            <Label Style="{StaticResource SubHeadings}">Schwierigkeit:</Label>
+                            <ListBox Margin="10">
+                                <ListBoxItem Content="Einfach" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
+                                <ListBoxItem Content="Mittel" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
+                                <ListBoxItem Content="Schwer" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
+                                <ListBoxItem Content="Egal" Style="{StaticResource RadioButtonListBox}"
+                                     IsSelected="True"></ListBoxItem>
+                            </ListBox>
+                            <Label Style="{StaticResource SubHeadings}">Dauer:</Label>
+                            <ListBox Margin="10">
+                                <ListBoxItem Content="0-10 min" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
+                                <ListBoxItem Content="10-30 min" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
+                                <ListBoxItem Content="30+ min" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
+                                <ListBoxItem Content="Egal" Style="{StaticResource RadioButtonListBox}"
+                                     IsSelected="True"></ListBoxItem>
+                            </ListBox>
+                            <Label Style="{StaticResource SubHeadings}">Hinzugefügt:</Label>
+                            <ListBox Margin="10">
+                                <ListBoxItem Content="Gestern" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
+                                <ListBoxItem Content="Letzte Woche" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
+                                <ListBoxItem Content="Letzten Monat" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
+                                <ListBoxItem Content="Irgendwann" Style="{StaticResource RadioButtonListBox}"
+                                     IsSelected="True"></ListBoxItem>
+                            </ListBox>
+                        </StackPanel>
+                    </Viewbox>
+                </Border>     
             </Grid>
 
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="80"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="15*"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" Margin="5">
-                    <Label VerticalAlignment="Center" FontSize="20" FontWeight="Bold" >Suchergebnisse:</Label>
-                </Grid>
+                <Border Grid.Row="0" Margin="5,0,0,0" BorderThickness="0,0,0,2" BorderBrush="Black">
+                    <Viewbox HorizontalAlignment="Left">
+                        <Label Style="{StaticResource Headings}">Suchergebnisse:</Label>
+                    </Viewbox>
+                </Border>
 
                 <Grid Grid.Row="1" Margin="5">
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5">
-                        <ItemsControl Name="ItemsControlVideos" ItemsSource="{Binding Videos}">
+                        <ItemsControl Name="ItemsControlVideos" ItemsSource="{Binding Videos}"
+                                      x:FieldModifier="Private">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Margin="0,10">
@@ -93,10 +247,18 @@
                                                 </Button.Template>
                                  
                                             </Button>
-                                           
-                                            
-                                            <Label Grid.Row="1" Content="{Binding VideoDuration, Converter={StaticResource TimeConv}}"
+
+                                            <Grid Grid.Row="1" Margin="0,3,0,0" >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <local:RatingControl HorizontalAlignment="Left" VerticalAlignment="Top"></local:RatingControl>
+                                                <Label Grid.Column="1" Content="{Binding VideoDuration, Converter={StaticResource TimeConv}}"
                                                    HorizontalAlignment="Right" VerticalAlignment="Top"></Label>
+                                            </Grid>
+                                
                                         </Grid>
 
                                         <Viewbox Grid.Column="1" VerticalAlignment="Top">

@@ -2,14 +2,14 @@
 
 Public Class VideoAdder
 
-    Public Sub AddVideo(ByVal url As String)
+    Public Sub AddVideo(ByVal url As String, ByVal dateAdded As Date, ByVal rating As Integer, ByVal difficulty As String)
 
         Dim sourceString As String = New WebClient().DownloadString(url)
 
         'Get title
         Dim splitStringTitleStart As String() = New String() {"<title>"}
         Dim splitStringTitleEnd As String() = New String() {"</title>"}
-        Dim title As String = sourceString.Split(splitStringTitleStart, StringSplitOptions.None)(1).Split(splitStringTitleEnd, StringSplitOptions.None)(0).Replace(" - YouTube", "")
+        Dim title As String = CreateSpecialCharacters(sourceString.Split(splitStringTitleStart, StringSplitOptions.None)(1).Split(splitStringTitleEnd, StringSplitOptions.None)(0).Replace(" - YouTube", ""))
 
         'Get author
         Dim splitStringAuthorStart As String() = New String() {"'SHARE_CAPTION': "}
@@ -22,12 +22,12 @@ Public Class VideoAdder
         Next
 
         author = author.Split("""")(0)
-        author = author.Trim
+        author = CreateSpecialCharacters(author.Trim)
 
         'Get description
         Dim splitStringDescriptionStart As String() = New String() {"<meta name=""description"" content="""}
         Dim splitStringDescriptionEnd As String() = New String() {""">"}
-        Dim description As String = sourceString.Split(splitStringDescriptionStart, StringSplitOptions.None)(1).Split(splitStringDescriptionEnd, StringSplitOptions.None)(0)
+        Dim description As String = CreateSpecialCharacters(sourceString.Split(splitStringDescriptionStart, StringSplitOptions.None)(1).Split(splitStringDescriptionEnd, StringSplitOptions.None)(0))
 
         'Get duration
         Dim splitStringDurationStart As String() = New String() {"""length_seconds"": "}
@@ -38,7 +38,7 @@ Public Class VideoAdder
         Dim splitStringImageUrlEnd As String() = New String() {""">"}
         Dim imageUrl As String = sourceString.Split(splitStringImageUrlStart, StringSplitOptions.None)(1).Split(splitStringImageUrlEnd, StringSplitOptions.None)(0)
 
-        Dim newVideo As New Video(url, title, author, description, duration, GetImage(imageUrl))
+        Dim newVideo As New Video(url, title, author, description, duration, GetImage(imageUrl), dateAdded, rating, difficulty)
         AllVideos.Videos.Add(newVideo)
 
     End Sub
@@ -54,5 +54,10 @@ Public Class VideoAdder
         End If
         Return Nothing
     End Function
+
+    Public Function CreateSpecialCharacters(ByVal originalText As String) As String
+        Return originalText.Replace("&#39;", "'")
+    End Function
+
 End Class
 

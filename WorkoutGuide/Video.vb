@@ -3,8 +3,9 @@
 Public Class Video
     Implements INotifyPropertyChanged
     Public Sub New(ByVal url As String, ByVal title As String, ByVal author As String, ByVal description As String, ByVal duration As Integer, _
-                   ByVal image As Windows.Media.ImageSource)
-        _url = url : _title = title : _author = author : _description = description : _duration = duration : _image = image
+                   ByVal image As Windows.Media.ImageSource, ByVal dateAdded As Date, ByVal rating As Integer, ByVal difficulty As String)
+        _url = url : _title = title : _author = author : _description = description : _duration = duration : _image = image : _dateAdded = dateAdded
+        _rating = rating : _difficulty = difficulty
     End Sub
 
     Private _url As String
@@ -73,6 +74,41 @@ Public Class Video
         End Set
     End Property
 
+    Private _dateAdded As Date
+
+    Public Property VideoDateAdded() As Date
+        Get
+            Return _dateAdded
+        End Get
+        Set(ByVal value As Date)
+            _dateAdded = value
+            RaiseProp("VideoDateAdded")
+        End Set
+    End Property
+
+    Private _rating As Integer
+
+    Public Property VideoRating() As Integer
+        Get
+            Return _rating
+        End Get
+        Set(ByVal value As Integer)
+            _rating = value
+            RaiseProp("VideoRating")
+        End Set
+    End Property
+
+    Private _difficulty As String
+
+    Public Property VideoDifficulty() As String 'einfach/mittel/leicht
+        Get
+            Return _difficulty
+        End Get
+        Set(ByVal value As String)
+            _difficulty = value
+            RaiseProp("VideoDifficulty")
+        End Set
+    End Property
 
     Public Sub RaiseProp(ByVal propertie As String)
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertie))

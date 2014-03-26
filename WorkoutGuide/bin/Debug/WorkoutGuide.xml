@@ -14,6 +14,14 @@ InitializeComponent
 	<summary>
 MainWindow
 </summary>
+</member><member name="M:WorkoutGuide.RatingControl.InitializeComponent">
+	<summary>
+InitializeComponent
+</summary>
+</member><member name="T:WorkoutGuide.RatingControl">
+	<summary>
+RatingControl
+</summary>
 </member><member name="M:WorkoutGuide.Application.InitializeComponent">
 	<summary>
 InitializeComponent
