@@ -1,8 +1,9 @@
 ﻿<Window x:Class="MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-          xmlns:local="clr-namespace:WorkoutGuide"
-    Title="MainWindow" Height="746.225" Width="937">
+    xmlns:local="clr-namespace:WorkoutGuide"    
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    Title="MainWindow" Height="783.725" Width="937">
 
     <Window.Resources>
         <local:TimeConverter x:Key="TimeConv"></local:TimeConverter>
@@ -57,7 +58,6 @@
                 <Setter.Value>15</Setter.Value>
             </Setter>
             <Setter Property="Focusable" Value="False"/>
-        
         </Style>
 
         <Style x:Key="CheckBoxTreeviewItem" TargetType="{x:Type TreeViewItem}">
@@ -65,8 +65,9 @@
                 <Setter.Value>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <CheckBox Margin="2" Tag="{Binding}" IsChecked="True" Cursor="Hand">
-                            </CheckBox>
+                            <CheckBox Margin="2" Tag="{Binding}" 
+                                      IsChecked="True" 
+                                      Cursor="Hand"></CheckBox>
                             <TextBlock Text="{Binding}"></TextBlock>
                         </StackPanel>
                     </DataTemplate>
@@ -165,46 +166,270 @@
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal">
                                 <Label Style="{StaticResource SubHeadings}">Stichwort:</Label>
-                                <TextBox Width="150" Margin="5" FontSize="15"></TextBox>
+                                <TextBox
+                                         Text="{Binding SearchCaracteristics.SearchFeaturesKeyword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Width="150" Margin="5" FontSize="15">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="TextChanged">
+                                            <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </TextBox>
                             </StackPanel>
 
                             <Label Style="{StaticResource SubHeadings}">Kategorie:</Label>
                             <TreeView Name="TreeViewCategories" x:FieldModifier="Private" Margin="10">
                                 <TreeViewItem Header="Muskelaufbau" Style="{StaticResource CheckBoxTreeviewItemHeader}" IsExpanded="True">
-                                    <TreeViewItem Header="Brust" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
-                                    <TreeViewItem Header="Bauch" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
-                                    <TreeViewItem Header="Bizeps" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
-                                    <TreeViewItem Header="Trizeps" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
-                                    <TreeViewItem Header="Schulter" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
-                                    <TreeViewItem Header="Rücken" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
-                                    <TreeViewItem Header="Bein" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Expanded">
+                                            <i:InvokeCommandAction Command="{Binding ChangeAllMuscleSearchFeaturesCommand}"></i:InvokeCommandAction>
+                                            <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                        </i:EventTrigger>
+                                        <i:EventTrigger EventName="Collapsed">
+                                            <i:InvokeCommandAction Command="{Binding ChangeAllMuscleSearchFeaturesCommand}"></i:InvokeCommandAction>
+                                            <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <TreeViewItem Style="{StaticResource CheckBoxTreeviewItem}">
+                                        <TreeViewItem.HeaderTemplate>
+                                            <DataTemplate>
+                                                <StackPanel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Path=DataContext}" Orientation="Horizontal">
+                                                    <CheckBox Margin="2" 
+                                                        IsChecked="{Binding SearchCaracteristics.SearchFeaturesCategories.CategoriesChest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                        Cursor="Hand">
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="Checked">
+                                                                <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                            </i:EventTrigger>
+                                                            <i:EventTrigger EventName="Unchecked">
+                                                                <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                    </CheckBox>
+                                                    <TextBlock Text="Brust"></TextBlock>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </TreeViewItem.HeaderTemplate>
+                                    </TreeViewItem>
+                                    <TreeViewItem Style="{StaticResource CheckBoxTreeviewItem}">
+                                        <TreeViewItem.HeaderTemplate>
+                                            <DataTemplate>
+                                                    <StackPanel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Path=DataContext}" Orientation="Horizontal">
+                                                        <CheckBox Margin="2" 
+                                                        IsChecked="{Binding SearchCaracteristics.SearchFeaturesCategories.CategoriesAbs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                        Cursor="Hand">
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="Checked">
+                                                                <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                            </i:EventTrigger>
+                                                            <i:EventTrigger EventName="Unchecked">
+                                                                <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                    </CheckBox>
+                                                        <TextBlock Text="Bauch"></TextBlock>
+                                                    </StackPanel>
+                                            </DataTemplate>
+                                        </TreeViewItem.HeaderTemplate>
+                                    </TreeViewItem>
+                                    <TreeViewItem Style="{StaticResource CheckBoxTreeviewItem}">
+                                        <TreeViewItem.HeaderTemplate>
+                                            <DataTemplate>
+                                                <StackPanel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Path=DataContext}" Orientation="Horizontal">
+                                                    <CheckBox Margin="2" 
+                                                        IsChecked="{Binding SearchCaracteristics.SearchFeaturesCategories.CategoriesBiceps, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                        Cursor="Hand">
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="Checked">
+                                                                <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                            </i:EventTrigger>
+                                                            <i:EventTrigger EventName="Unchecked">
+                                                                <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                    </CheckBox>
+                                                    <TextBlock Text="Bizeps"></TextBlock>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </TreeViewItem.HeaderTemplate>
+                                    </TreeViewItem>
+                                    <TreeViewItem Style="{StaticResource CheckBoxTreeviewItem}">
+                                        <TreeViewItem.HeaderTemplate>
+                                            <DataTemplate>
+                                                <StackPanel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Path=DataContext}" Orientation="Horizontal">
+                                                    <CheckBox Margin="2" 
+                                                        IsChecked="{Binding SearchCaracteristics.SearchFeaturesCategories.CategoriesTriceps, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                        Cursor="Hand">
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="Checked">
+                                                                <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                            </i:EventTrigger>
+                                                            <i:EventTrigger EventName="Unchecked">
+                                                                <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                    </CheckBox>
+                                                    <TextBlock Text="Trizeps"></TextBlock>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </TreeViewItem.HeaderTemplate>
+                                    </TreeViewItem>
+                                    <TreeViewItem Style="{StaticResource CheckBoxTreeviewItem}">
+                                        <TreeViewItem.HeaderTemplate>
+                                            <DataTemplate>
+                                                <StackPanel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Path=DataContext}" Orientation="Horizontal">
+                                                    <CheckBox Margin="2" 
+                                                        IsChecked="{Binding SearchCaracteristics.SearchFeaturesCategories.CategoriesShoulder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                        Cursor="Hand">
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="Checked">
+                                                                <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                            </i:EventTrigger>
+                                                            <i:EventTrigger EventName="Unchecked">
+                                                                <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                    </CheckBox>
+                                                    <TextBlock Text="Schulter"></TextBlock>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </TreeViewItem.HeaderTemplate>
+                                    </TreeViewItem>
+                                    <TreeViewItem Style="{StaticResource CheckBoxTreeviewItem}">
+                                        <TreeViewItem.HeaderTemplate>
+                                            <DataTemplate>
+                                                <StackPanel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Path=DataContext}" Orientation="Horizontal">
+                                                    <CheckBox Margin="2" 
+                                                        IsChecked="{Binding SearchCaracteristics.SearchFeaturesCategories.CategoriesBack, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                        Cursor="Hand">
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="Checked">
+                                                                <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                            </i:EventTrigger>
+                                                            <i:EventTrigger EventName="Unchecked">
+                                                                <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                    </CheckBox>
+                                                    <TextBlock Text="Rücken"></TextBlock>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </TreeViewItem.HeaderTemplate>
+                                    </TreeViewItem>
+                                    <TreeViewItem Style="{StaticResource CheckBoxTreeviewItem}">
+                                        <TreeViewItem.HeaderTemplate>
+                                            <DataTemplate>
+                                                <StackPanel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Path=DataContext}" Orientation="Horizontal">
+                                                    <CheckBox Margin="2" 
+                                                        IsChecked="{Binding SearchCaracteristics.SearchFeaturesCategories.CategoriesLeg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                        Cursor="Hand">
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="Checked">
+                                                                <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                            </i:EventTrigger>
+                                                            <i:EventTrigger EventName="Unchecked">
+                                                                <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                    </CheckBox>
+                                                    <TextBlock Text="Bein"></TextBlock>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </TreeViewItem.HeaderTemplate>
+                                    </TreeViewItem>
                                 </TreeViewItem>
-                                <TreeViewItem Header="Ausdauer" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
-                                <TreeViewItem Header="Schnelligkeit" Style="{StaticResource CheckBoxTreeviewItem}"></TreeViewItem>
+                                <TreeViewItem Style="{StaticResource CheckBoxTreeviewItemHeader}">
+                                    <TreeViewItem.HeaderTemplate>
+                                        <DataTemplate>
+                                            <StackPanel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Path=DataContext}" Orientation="Horizontal">
+                                                <CheckBox Margin="2" 
+                                                        IsChecked="{Binding SearchCaracteristics.SearchFeaturesCategories.CategoriesCardio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                        Cursor="Hand">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="Checked">
+                                                            <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                        </i:EventTrigger>
+                                                        <i:EventTrigger EventName="Unchecked">
+                                                            <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </CheckBox>
+                                                <TextBlock Text="Ausdauer"></TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </TreeViewItem.HeaderTemplate>
+                                </TreeViewItem>
+                                <TreeViewItem Style="{StaticResource CheckBoxTreeviewItemHeader}">
+                                    <TreeViewItem.HeaderTemplate>
+                                        <DataTemplate>
+                                            <StackPanel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Path=DataContext}" Orientation="Horizontal">
+                                                <CheckBox Margin="2" 
+                                                        IsChecked="{Binding SearchCaracteristics.SearchFeaturesCategories.CategoriesSpeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                        Cursor="Hand">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="Checked">
+                                                            <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                        </i:EventTrigger>
+                                                        <i:EventTrigger EventName="Unchecked">
+                                                            <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </CheckBox>
+                                                <TextBlock Text="Schnelligkeit"></TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </TreeViewItem.HeaderTemplate>
+                                </TreeViewItem>
                             </TreeView>
                             <Label Style="{StaticResource SubHeadings}">Schwierigkeit:</Label>
                             <ListBox Margin="10">
-                                <ListBoxItem Content="Einfach" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
-                                <ListBoxItem Content="Mittel" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
-                                <ListBoxItem Content="Schwer" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <ListBoxItem Content="Einfach" Style="{StaticResource RadioButtonListBox}"
+                                             IsSelected="{Binding SearchCaracteristics.SearchFeaturesDifficulty.DifficultyEasy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
+                                <ListBoxItem Content="Mittel" Style="{StaticResource RadioButtonListBox}"
+                                             IsSelected="{Binding SearchCaracteristics.SearchFeaturesDifficulty.DifficlutyIntermediate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
+                                <ListBoxItem Content="Schwer" Style="{StaticResource RadioButtonListBox}"
+                                             IsSelected="{Binding SearchCaracteristics.SearchFeaturesDifficulty.DifficultyDifficult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
                                 <ListBoxItem Content="Egal" Style="{StaticResource RadioButtonListBox}"
-                                     IsSelected="True"></ListBoxItem>
+                                             IsSelected="{Binding SearchCaracteristics.SearchFeaturesDifficulty.DifficultyDoesntMatter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
                             </ListBox>
                             <Label Style="{StaticResource SubHeadings}">Dauer:</Label>
                             <ListBox Margin="10">
-                                <ListBoxItem Content="0-10 min" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
-                                <ListBoxItem Content="10-30 min" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
-                                <ListBoxItem Content="30+ min" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <ListBoxItem Content="0-10 min" Style="{StaticResource RadioButtonListBox}"
+                                             IsSelected="{Binding SearchCaracteristics.SearchFeaturesDuration.DurationZeroToTen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
+                                <ListBoxItem Content="10-30 min" Style="{StaticResource RadioButtonListBox}"
+                                              IsSelected="{Binding SearchCaracteristics.SearchFeaturesDuration.DurationTenToThirty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
+                                <ListBoxItem Content="30+ min" Style="{StaticResource RadioButtonListBox}"
+                                              IsSelected="{Binding SearchCaracteristics.SearchFeaturesDuration.DurationOverThirty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
                                 <ListBoxItem Content="Egal" Style="{StaticResource RadioButtonListBox}"
-                                     IsSelected="True"></ListBoxItem>
+                                              IsSelected="{Binding SearchCaracteristics.SearchFeaturesDuration.DurationDoesntMatter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
                             </ListBox>
                             <Label Style="{StaticResource SubHeadings}">Hinzugefügt:</Label>
                             <ListBox Margin="10">
-                                <ListBoxItem Content="Gestern" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
-                                <ListBoxItem Content="Letzte Woche" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
-                                <ListBoxItem Content="Letzten Monat" Style="{StaticResource RadioButtonListBox}"></ListBoxItem>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding AdjustSearchResultsCommand}"></i:InvokeCommandAction>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <ListBoxItem Content="Heute" Style="{StaticResource RadioButtonListBox}"
+                                             IsSelected="{Binding SearchCaracteristics.SearchFeaturesDateAdded.DateAddedToday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
+                                <ListBoxItem Content="Gestern" Style="{StaticResource RadioButtonListBox}"
+                                             IsSelected="{Binding SearchCaracteristics.SearchFeaturesDateAdded.DateAddedYesterday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
+                                <ListBoxItem Content="Letzte Woche" Style="{StaticResource RadioButtonListBox}"
+                                             IsSelected="{Binding SearchCaracteristics.SearchFeaturesDateAdded.DateAddedLastWeek, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
+                                <ListBoxItem Content="Letzten Monat" Style="{StaticResource RadioButtonListBox}"
+                                             IsSelected="{Binding SearchCaracteristics.SearchFeaturesDateAdded.DateAddedLastMonth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
                                 <ListBoxItem Content="Irgendwann" Style="{StaticResource RadioButtonListBox}"
-                                     IsSelected="True"></ListBoxItem>
+                                             IsSelected="{Binding SearchCaracteristics.SearchFeaturesDateAdded.DateAddedDoesntMatter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
                             </ListBox>
                         </StackPanel>
                     </Viewbox>
@@ -225,7 +450,7 @@
 
                 <Grid Grid.Row="1" Margin="5">
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5">
-                        <ItemsControl ItemsSource="{Binding AllVideos.Videos}">
+                        <ItemsControl ItemsSource="{Binding SearchedVideos.Videos}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Margin="0,10">

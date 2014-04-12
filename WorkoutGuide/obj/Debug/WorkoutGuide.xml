@@ -58,11 +58,6 @@ AddEventHandler
 	<summary>
 GeneratedInternalTypeHelper
 </summary>
-</member><member name="T:WorkoutGuide.RelayCommand">
-	<summary>
- A command whose sole purpose is to relay its functionality to other objects by invoking delegates. The default return value for the CanExecute method is 'true'.
- </summary>
-	<remarks></remarks>
 </member><member name="P:WorkoutGuide.My.MyWpfExtension.Application">
 	<summary>
  Gibt das Anwendungsobjekt für die ausgeführte Anwendung zurück.
@@ -87,6 +82,11 @@ GeneratedInternalTypeHelper
 </member><member name="T:WorkoutGuide.My.MyWpfExtension">
 	<summary>
  Modul zum Definieren der im My-Namespace für WPF verfügbaren Eigenschaften
+ </summary>
+	<remarks></remarks>
+</member><member name="T:WorkoutGuide.RelayCommand">
+	<summary>
+ A command whose sole purpose is to relay its functionality to other objects by invoking delegates. The default return value for the CanExecute method is 'true'.
  </summary>
 	<remarks></remarks>
 </member><member name="P:WorkoutGuide.My.Resources.Resources.ResourceManager">

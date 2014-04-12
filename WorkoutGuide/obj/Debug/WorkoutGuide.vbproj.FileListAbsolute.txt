@@ -16,3 +16,8 @@ C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuid
 C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\WorkoutGuide.vbproj.GenerateResource.Cache
 C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\RatingControl.baml
 C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\RatingControl.g.vb
+C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\bin\Debug\Microsoft.Expression.Interactions.dll
+C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\bin\Debug\Microsoft.Expression.Interactions.xml
+C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\bin\Debug\System.Windows.Interactivity.xml
+C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\WorkoutGuide.vbprojResolveAssemblyReference.cache
