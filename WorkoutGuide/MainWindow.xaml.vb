@@ -2,7 +2,7 @@
 
     Private Sub MainWindow_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
 
-       GridMain.DataContext = MainViewModel
+        MainWindow.DataContext = MainViewModel
 
         TreeViewCategories.MinHeight = TreeViewCategories.ActualHeight
     End Sub

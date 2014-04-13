@@ -2,10 +2,16 @@
 
 Public Class Video
     Implements INotifyPropertyChanged
+
+    Public Sub New()
+
+    End Sub
+
     Public Sub New(ByVal url As String, ByVal title As String, ByVal author As String, ByVal description As String, ByVal duration As Integer, _
-                   ByVal image As Windows.Media.ImageSource, ByVal dateAdded As Date, ByVal rating As Integer, ByVal difficulty As Difficulty, ByVal categories As Category)
+                   ByVal image As Windows.Media.ImageSource, ByVal dateAdded As Date, ByVal rating As Integer, ByVal difficulty As Difficulty, _
+                   ByVal categories As Categories, ByVal urlOk As Boolean)
         _url = url : _title = title : _author = author : _description = description : _duration = duration : _image = image : _dateAdded = dateAdded
-        _rating = rating : _difficulty = difficulty : _categories = categories
+        _rating = rating : _difficulty = difficulty : _categories = categories : _urlOk = urlOk
 
 
         CreateOpenLinkCommand()
@@ -112,15 +118,25 @@ Public Class Video
         End Set
     End Property
 
-    Private _categories As Category
-
-    Public Property VideoCategories() As Category
+    Private _categories As Categories
+    Public Property VideoCategories() As Categories
         Get
             Return _categories
         End Get
-        Set(ByVal value As Category)
+        Set(ByVal value As Categories)
             _categories = value
             RaiseProp("VideoCategories")
+        End Set
+    End Property
+
+    Private _urlOk As Boolean
+    Public Property VideoUrlOk() As Boolean
+        Get
+            Return _urlOk
+        End Get
+        Set(ByVal value As Boolean)
+            _urlOk = value
+            RaiseProp("VideoUrlOk")
         End Set
     End Property
 

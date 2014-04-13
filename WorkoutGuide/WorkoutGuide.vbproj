@@ -84,6 +84,7 @@
     <Compile Include="SearchFeatures.vb" />
     <Compile Include="TimeConverter.vb" />
     <Compile Include="Video.vb" />
+    <Compile Include="VideoUrlVisibilityConverter.vb" />
     <Compile Include="ViewModel.vb" />
     <Compile Include="VideosList.vb" />
     <Page Include="MainWindow.xaml">

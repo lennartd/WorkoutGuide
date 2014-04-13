@@ -7,6 +7,8 @@ Public Class ViewModel
     Public Sub New ()
         CreateAdjustSearchResultsCommand()
         CreateChangeAllMuscleSearchFeaturesCommand()
+        CreateAddVideoPreviewCommand()
+        CreateAddVideoCommand()
     End Sub
 
 
@@ -22,7 +24,6 @@ Public Class ViewModel
     End Property
 
     Private _searchedVideos As VideosList
-
     Public Property SearchedVideos() As VideosList
         Get
             Return _searchedVideos
@@ -34,7 +35,6 @@ Public Class ViewModel
     End Property
 
     Private _searchCharacteristics As SearchFeatures
-
     Public Property SearchCaracteristics() As SearchFeatures
         Get
             Return _searchCharacteristics
@@ -45,7 +45,29 @@ Public Class ViewModel
         End Set
     End Property
 
-    Public Sub AddVideo(ByVal url As String, ByVal dateAdded As Date, ByVal rating As Integer, ByVal difficulty As Difficulty, ByVal categories As Category)
+    Private _newVideo As Video
+    Public Property NewVideo() As Video
+        Get
+            Return _newVideo
+        End Get
+        Set(ByVal value As Video)
+            _newVideo = value
+            RaiseProp("NewVideo")
+        End Set
+    End Property
+
+    Private _statusInformation As String
+    Public Property StatusInformation() As String
+        Get
+            Return _statusInformation
+        End Get
+        Set(ByVal value As String)
+            _statusInformation = value
+            RaiseProp("StatusInformation")
+        End Set
+    End Property
+
+    Public Function GetVideo(ByVal url As String, ByVal dateAdded As Date, ByVal rating As Integer, ByVal difficulty As Difficulty, ByVal categories As Categories) As Video
 
         Dim sourceString As String = New WebClient().DownloadString(url)
 
@@ -81,10 +103,8 @@ Public Class ViewModel
         Dim splitStringImageUrlEnd As String() = New String() {""">"}
         Dim imageUrl As String = sourceString.Split(splitStringImageUrlStart, StringSplitOptions.None)(1).Split(splitStringImageUrlEnd, StringSplitOptions.None)(0)
 
-        Dim newVideo As New Video(url, title, author, description, duration, GetImage(imageUrl), dateAdded, rating, difficulty, categories)
-        AllVideos.Videos.Add(newVideo)
-
-    End Sub
+        Return New Video(url, title, author, description, duration, GetImage(imageUrl), dateAdded, rating, difficulty, categories, True)
+    End Function
 
     Private Function GetImage(ByVal pictureurl As String) As Windows.Media.ImageSource
 
@@ -131,23 +151,23 @@ Public Class ViewModel
        For i = 0 To AllVideos.Videos.Count - 1
             
             'Categories
-            If SearchCaracteristics.SearchFeaturesCategories.CategoriesAbs = True AndAlso AllVideos.Videos(i).VideoCategories.Abs = True
+            If SearchCaracteristics.SearchFeaturesCategories.CategoriesAbs = True AndAlso AllVideos.Videos(i).VideoCategories.CategoriesAbs = True
                 SearchedVideos.Videos.Add(AllVideos.Videos(i))
-            ElseIf SearchCaracteristics.SearchFeaturesCategories.CategoriesBack = True AndAlso AllVideos.Videos(i).VideoCategories.Back = True
+            ElseIf SearchCaracteristics.SearchFeaturesCategories.CategoriesBack = True AndAlso AllVideos.Videos(i).VideoCategories.CategoriesBack = True
                 SearchedVideos.Videos.Add(AllVideos.Videos(i))
-            ElseIf SearchCaracteristics.SearchFeaturesCategories.CategoriesBiceps = True AndAlso AllVideos.Videos(i).VideoCategories.Biceps = True
+            ElseIf SearchCaracteristics.SearchFeaturesCategories.CategoriesBiceps = True AndAlso AllVideos.Videos(i).VideoCategories.CategoriesBiceps = True
                 SearchedVideos.Videos.Add(AllVideos.Videos(i))
-            ElseIf SearchCaracteristics.SearchFeaturesCategories.CategoriesCardio = True AndAlso AllVideos.Videos(i).VideoCategories.Cardio = True
+            ElseIf SearchCaracteristics.SearchFeaturesCategories.CategoriesCardio = True AndAlso AllVideos.Videos(i).VideoCategories.CategoriesCardio = True
                 SearchedVideos.Videos.Add(AllVideos.Videos(i))
-            ElseIf SearchCaracteristics.SearchFeaturesCategories.CategoriesChest = True AndAlso AllVideos.Videos(i).VideoCategories.Chest = True
+            ElseIf SearchCaracteristics.SearchFeaturesCategories.CategoriesChest = True AndAlso AllVideos.Videos(i).VideoCategories.CategoriesChest = True
                 SearchedVideos.Videos.Add(AllVideos.Videos(i))
-            ElseIf SearchCaracteristics.SearchFeaturesCategories.CategoriesLeg = True AndAlso AllVideos.Videos(i).VideoCategories.Leg = True
+            ElseIf SearchCaracteristics.SearchFeaturesCategories.CategoriesLeg = True AndAlso AllVideos.Videos(i).VideoCategories.CategoriesLeg = True
                 SearchedVideos.Videos.Add(AllVideos.Videos(i))
-            ElseIf SearchCaracteristics.SearchFeaturesCategories.CategoriesShoulder = True AndAlso AllVideos.Videos(i).VideoCategories.Shoulder = True
+            ElseIf SearchCaracteristics.SearchFeaturesCategories.CategoriesShoulder = True AndAlso AllVideos.Videos(i).VideoCategories.CategoriesShoulder = True
                 SearchedVideos.Videos.Add(AllVideos.Videos(i))
-            ElseIf SearchCaracteristics.SearchFeaturesCategories.CategoriesSpeed = True AndAlso AllVideos.Videos(i).VideoCategories.Speed = True
+            ElseIf SearchCaracteristics.SearchFeaturesCategories.CategoriesSpeed = True AndAlso AllVideos.Videos(i).VideoCategories.CategoriesSpeed = True
                 SearchedVideos.Videos.Add(AllVideos.Videos(i))
-            ElseIf SearchCaracteristics.SearchFeaturesCategories.CategoriesTriceps = True AndAlso AllVideos.Videos(i).VideoCategories.Triceps = True
+            ElseIf SearchCaracteristics.SearchFeaturesCategories.CategoriesTriceps = True AndAlso AllVideos.Videos(i).VideoCategories.CategoriesTriceps = True
                 SearchedVideos.Videos.Add(AllVideos.Videos(i))
             End If
        Next
@@ -259,6 +279,82 @@ Public Class ViewModel
         End If
     End Sub
 
+     'AddVideoPreviewCommand
+    Private _addVideoPreviewCommand As ICommand
+    Public Property AddVideoPreviewCommand() As ICommand
+    Get
+        Return _addVideoPreviewCommand
+    End Get
+    Set(ByVal value As ICommand)
+        _addVideoPreviewCommand = value
+        RaiseProp("AddVideoPreviewCommand")
+    End Set
+    End Property
+
+    Private Function CanExecuteAddVideoPreviewCommand() As Boolean
+        Return True
+    End Function
+
+    Private Sub CreateAddVideoPreviewCommand()
+        AddVideoPreviewCommand = New RelayCommand(AddressOf AddVideoPreviewExecute, AddressOf CanExecuteAddVideoPreviewCommand)
+    End Sub
+
+    Private Sub AddVideoPreviewExecute()
+        If NewVideo.VideoUrl.StartsWith("www.")
+            NewVideo.VideoUrl = "https://" & NewVideo.VideoUrl
+        End If
+
+        Try
+            NewVideo = GetVideo(NewVideo.VideoUrl, Today, 0, New Difficulty(), _
+                                New Categories(False, False, False, False, False, False, False, False, False, False)) 
+        Catch
+            NewVideo.VideoUrlOk = False
+        End Try
+        
+    End Sub
+
+    'AddVideoCommand
+    Private _addVideoCommand As ICommand
+    Public Property AddVideoCommand() As ICommand
+        Get
+            Return _addVideoCommand
+        End Get
+        Set(ByVal value As ICommand)
+            _addVideoCommand = value
+            RaiseProp("AddVideoCommand")
+        End Set
+    End Property
+
+    Private Function CanExecuteAddVideoCommand() As Boolean
+        If NewVideo Is Nothing
+            Return False
+        End If
+        If NewVideo.VideoUrlOk = True
+            If NewVideo.VideoCategories.CategoriesAbs = True Or NewVideo.VideoCategories.CategoriesBack = True Or _
+                NewVideo.VideoCategories.CategoriesBiceps = True Or NewVideo.VideoCategories.CategoriesCardio = True Or _
+                NewVideo.VideoCategories.CategoriesChest = True Or  NewVideo.VideoCategories.CategoriesLeg = True Or _
+                NewVideo.VideoCategories.CategoriesShoulder = True Or  NewVideo.VideoCategories.CategoriesSpeed = True _
+                Or  NewVideo.VideoCategories.CategoriesTriceps = True
+                If NewVideo.VideoDifficulty.DifficultyEasy = True Or NewVideo.VideoDifficulty.DifficlutyIntermediate = True _
+                    Or NewVideo.VideoDifficulty.DifficultyDifficult = True
+                    Return True
+                End If
+            End If
+        End If
+        Return False
+    End Function
+
+    Private Sub CreateAddVideoCommand
+        AddVideoCommand = New RelayCommand(AddressOf AddVideoExecute, AddressOf CanExecuteAddVideoCommand)
+    End Sub
+
+    Private Sub AddVideoExecute
+        AllVideos.Videos.Add(NewVideo)
+        StatusInformation = """" & NewVideo.VideoTitle & """" & " wurde erfolgreich hinzugefügt."
+        NewVideo = New Video()
+        AdjustSearchResultsExecute()
+    End Sub
+
 #End Region
 
 
@@ -269,12 +365,6 @@ Public Class ViewModel
         End If
         Return False
     End Function
-
-
-
-
-
-
 
 
     Public Sub RaiseProp(ByVal propertie As String)
