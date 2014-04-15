@@ -1,5 +1,6 @@
 ﻿Imports System.Collections.ObjectModel
 
+<Serializable()> _
 Public Class VideosList
 
     Private _videos As New ObservableCollection(Of Video)

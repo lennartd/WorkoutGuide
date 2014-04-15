@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:WorkoutGuide"    
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    x:Name="MainWindow"  Title="Workout Guide" Height="818.225" Width="937">
+    x:Name="MainWindow"  Title="Workout Guide" Height="839.225" Width="937">
 
     <Window.Resources>
         <local:TimeConverter x:Key="TimeConv"></local:TimeConverter>
@@ -179,7 +179,10 @@
 
                             <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="Black">
                                 <Viewbox HorizontalAlignment="Left">
-                                    <Label Style="{StaticResource Headings}">Suche:</Label>
+                                    <Grid>
+                                        <Label Grid.Column="0" Style="{StaticResource Headings}">Suche:</Label>
+                                    </Grid>
+
                                 </Viewbox>
                             </Border>
 
@@ -202,7 +205,8 @@
 
                                         <Label Style="{StaticResource SubHeadings}">Kategorie:</Label>
                                         <TreeView Name="TreeViewCategories" x:FieldModifier="Private" Background="#FFFBFBFB" Margin="10">
-                                            <TreeViewItem Header="Muskelaufbau" Style="{StaticResource CheckBoxTreeviewItemHeader}" IsExpanded="True">
+                                            <TreeViewItem Header="Muskelaufbau" Style="{StaticResource CheckBoxTreeviewItemHeader}" 
+                                                          IsExpanded="{Binding SearchCaracteristics.SearchFeaturesCategories.CategoriesAllMuscles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=True}">
                                                 <i:Interaction.Triggers>
                                                     <i:EventTrigger EventName="Expanded">
                                                         <i:InvokeCommandAction Command="{Binding ChangeAllMuscleSearchFeaturesCommand}"></i:InvokeCommandAction>
@@ -454,6 +458,8 @@
                                             <ListBoxItem Content="Irgendwann" Style="{StaticResource RadioButtonListBox}"
                                              IsSelected="{Binding SearchCaracteristics.SearchFeaturesDateAdded.DateAddedDoesntMatter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
                                         </ListBox>
+                                        <Button Margin="10"
+                                                Command="{Binding ResetSearchCommand}">Zurücksetzen</Button>
                                     </StackPanel>
                                 </Viewbox>
                             </Border>
@@ -489,7 +495,7 @@
                                                         </Grid.RowDefinitions>
 
                                                         <Button Grid.Row="0" Name="ButtonVideoImage"    
-                                                Command="{Binding OpenLinkCommand}">
+                                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.ResetSearchCommand}">
                                                             <Button.Template>
                                                                 <ControlTemplate>
                                                                     <Image Source="{Binding VideoImage}"

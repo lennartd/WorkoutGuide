@@ -5,6 +5,9 @@
         MainWindow.DataContext = MainViewModel
 
         TreeViewCategories.MinHeight = TreeViewCategories.ActualHeight
+
+
+        MainViewModel.SaveToXml()
     End Sub
 
 End Class

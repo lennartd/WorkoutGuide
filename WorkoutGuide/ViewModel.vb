@@ -1,5 +1,7 @@
 ﻿Imports System.Net
 Imports System.ComponentModel
+Imports System.IO
+Imports System.Xml.Serialization
 
 Public Class ViewModel
     Implements INotifyPropertyChanged
@@ -9,9 +11,10 @@ Public Class ViewModel
         CreateChangeAllMuscleSearchFeaturesCommand()
         CreateAddVideoPreviewCommand()
         CreateAddVideoCommand()
+        CreateResetSearchCommand()
     End Sub
 
-
+#Region "Properties"
     Private _allVideos As VideosList
     Public Property AllVideos() As VideosList
         Get
@@ -66,6 +69,8 @@ Public Class ViewModel
             RaiseProp("StatusInformation")
         End Set
     End Property
+#End Region
+
 
     Public Function GetVideo(ByVal url As String, ByVal dateAdded As Date, ByVal rating As Integer, ByVal difficulty As Difficulty, ByVal categories As Categories) As Video
 
@@ -121,7 +126,24 @@ Public Class ViewModel
         Return originalText.Replace("&#39;", "'")
     End Function
 
+    Private Function CheckIfDateIsInRange(ByVal startDate as Date, ByVal endDate As Date, ByVal dateToCheck As Date)
 
+        If dateToCheck >= startDate AndAlso dateToCheck <= endDate
+            Return True
+        End If
+        Return False
+    End Function
+
+    Public Sub SaveToXml()
+        If Not Directory.Exists(FilesDirectory)
+            Directory.CreateDirectory(FilesDirectory)
+        End If
+        'Serialize object to a text file.
+        Dim objStreamWriter As New StreamWriter(FilesDirectory & "\Data.xml")
+        Dim x As New XmlSerializer(AllVideos.GetType)
+        x.Serialize(objStreamWriter, AllVideos)
+        objStreamWriter.Close()
+    End Sub
 
 #Region "Commands"
     'AdjustSearchResultsCommand
@@ -258,7 +280,7 @@ Public Class ViewModel
 
     Private Sub ChangeAllMuscleSearchFeaturesExecute()
 
-        If SearchCaracteristics.SearchFeaturesCategories.CategoriesAllMuscles = True
+        If SearchCaracteristics.SearchFeaturesCategories.CategoriesAllMuscles = False
             SearchCaracteristics.SearchFeaturesCategories.CategoriesAllMuscles = False
             SearchCaracteristics.SearchFeaturesCategories.CategoriesAbs = False
             SearchCaracteristics.SearchFeaturesCategories.CategoriesBack = False
@@ -355,17 +377,49 @@ Public Class ViewModel
         AdjustSearchResultsExecute()
     End Sub
 
-#End Region
 
+    'ResetSearchCommand
+    Private _resetSearchCommand As ICommand
+    Public Property ResetSearchCommand() As ICommand
+        Get
+            Return _resetSearchCommand
+        End Get
+        Set(ByVal value As ICommand)
+            _resetSearchCommand = value
+            RaiseProp("ResetSearchCommand")
+        End Set
+    End Property
 
-    Private Function CheckIfDateIsInRange(ByVal startDate as Date, ByVal endDate As Date, ByVal dateToCheck As Date)
-
-        If dateToCheck >= startDate AndAlso dateToCheck <= endDate
-            Return True
+    Private Function CanExecuteResetSearchCommand() As Boolean
+        If SearchCaracteristics is Nothing
+            Return False
         End If
-        Return False
+        If SearchCaracteristics.SearchFeaturesCategories.CategoriesAbs = True AndAlso SearchCaracteristics.SearchFeaturesCategories.CategoriesAllMuscles = True _
+            AndAlso SearchCaracteristics.SearchFeaturesCategories.CategoriesBack = True  _
+            AndAlso SearchCaracteristics.SearchFeaturesCategories.CategoriesBiceps = True AndAlso _
+            SearchCaracteristics.SearchFeaturesCategories.CategoriesBiceps = True AndAlso SearchCaracteristics.SearchFeaturesCategories.CategoriesCardio = True _
+            AndAlso SearchCaracteristics.SearchFeaturesCategories.CategoriesChest = True AndAlso _
+            SearchCaracteristics.SearchFeaturesCategories.CategoriesLeg = True AndAlso SearchCaracteristics.SearchFeaturesCategories.CategoriesShoulder = True _
+            AndAlso SearchCaracteristics.SearchFeaturesCategories.CategoriesSpeed = True AndAlso _
+            SearchCaracteristics.SearchFeaturesCategories.CategoriesTriceps = True AndAlso _
+            SearchCaracteristics.SearchFeaturesDateAdded.DateAddedDoesntMatter = True AndAlso _
+            SearchCaracteristics.SearchFeaturesDifficulty.DifficultyDoesntMatter = True AndAlso _
+            SearchCaracteristics.SearchFeaturesDuration.DurationDoesntMatter = True AndAlso SearchCaracteristics.SearchFeaturesKeyword = Nothing Then
+
+            Return False
+        End If
+        Return True
     End Function
 
+    Private Sub CreateResetSearchCommand()
+        ResetSearchCommand = New RelayCommand(AddressOf ResetSearchExecute, AddressOf CanExecuteResetSearchCommand)
+    End Sub
+
+    Private Sub ResetSearchExecute()
+        SearchCaracteristics = New SearchFeatures(Nothing, New Categories(), New Difficulty(), New Duration(), New DateAdded())
+    End Sub
+
+#End Region
 
     Public Sub RaiseProp(ByVal propertie As String)
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertie))

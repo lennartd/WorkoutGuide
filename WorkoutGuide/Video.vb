@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 
+<Serializable()> _
 Public Class Video
     Implements INotifyPropertyChanged
 
