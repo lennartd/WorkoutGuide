@@ -6,12 +6,16 @@ Imports System.Xml.Serialization
 Public Class ViewModel
     Implements INotifyPropertyChanged
 
+
     Public Sub New ()
         CreateAdjustSearchResultsCommand()
         CreateChangeAllMuscleSearchFeaturesCommand()
         CreateAddVideoPreviewCommand()
         CreateAddVideoCommand()
         CreateResetSearchCommand()
+        CreateOpenAddNewWorkoutWindowCommand()
+        CreateAddWorkoutCommand()
+        CreateAddVideoToWorkoutCommand()
     End Sub
 
 #Region "Properties"
@@ -67,6 +71,61 @@ Public Class ViewModel
         Set(ByVal value As String)
             _statusInformation = value
             RaiseProp("StatusInformation")
+        End Set
+    End Property
+
+    Private _allWorkouts As WorkoutsList
+    Public Property AllWorkouts() As WorkoutsList
+        Get
+            Return _allWorkouts
+        End Get
+        Set(ByVal value As WorkoutsList)
+            _allWorkouts = value
+            RaiseProp("AllWorkouts")
+        End Set
+    End Property
+
+    Private _newWorkout As Workout
+    Public Property NewWorkout() As Workout
+        Get
+            Return _newWorkout
+        End Get
+        Set(ByVal value As Workout)
+            _newWorkout = value
+            RaiseProp("NewWorkout")
+        End Set
+    End Property
+
+    Private _selectedWorkout As Workout
+    Public Property SelectedWorkout() As Workout
+        Get
+            Return _selectedWorkout
+        End Get
+        Set(ByVal value As Workout)
+            _selectedWorkout = value
+            RaiseProp("SelectedWorkout")
+        End Set
+    End Property
+
+    Private _selectedVideo As Video
+    Public Property SelectedVideo() As Video
+        Get
+            Return _selectedVideo
+        End Get
+        Set(ByVal value As Video)
+            _selectedVideo = value
+            RaiseProp("SelectedVideo")
+        End Set
+    End Property
+
+    Private _chosenWorkout As Workout
+    Public Property ChosenWorkout() As Workout
+        Get
+            Return _ChosenWorkout
+        End Get
+        Set(ByVal value As Workout)
+            _ChosenWorkout = value
+            RaiseProp("ChosenWorkout")
         End Set
     End Property
 #End Region
@@ -314,6 +373,9 @@ Public Class ViewModel
     End Property
 
     Private Function CanExecuteAddVideoPreviewCommand() As Boolean
+        If NewVideo.VideoUrl = Nothing
+            Return False
+        End If
         Return True
     End Function
 
@@ -419,6 +481,100 @@ Public Class ViewModel
         SearchCaracteristics = New SearchFeatures(Nothing, New Categories(), New Difficulty(), New Duration(), New DateAdded())
     End Sub
 
+    'OpenAddNewWorkoutWindowCommand
+    Private _openAddNewWorkoutWindowCommand As ICommand
+    Public Property OpenAddNewWorkoutWindowCommand() As ICommand
+        Get
+            Return _openAddNewWorkoutWindowCommand
+        End Get
+        Set(ByVal value As ICommand)
+            _openAddNewWorkoutWindowCommand = value
+            RaiseProp("OpenAddNewWorkoutWindowCommand")
+        End Set
+    End Property
+
+    Private Function CanExecuteOpenAddNewWorkoutWindowCommand() As Boolean
+        Return Not Windows.Application.Current.Windows.OfType (Of AddNewWorkoutWindow)().Any()
+    End Function
+
+    Private Sub CreateOpenAddNewWorkoutWindowCommand()
+        OpenAddNewWorkoutWindowCommand = New RelayCommand(AddressOf OpenAddNewWorkoutWindowExecute, AddressOf CanExecuteOpenAddNewWorkoutWindowCommand)
+    End Sub
+
+    Private Sub OpenAddNewWorkoutWindowExecute()
+        Dim w As New AddNewWorkoutWindow()
+        w.Show()
+    End Sub
+
+    'AddWorkoutCommand
+    Private _addWorkoutCommand As ICommand
+    Public Property AddWorkoutCommand() As ICommand
+        Get
+            Return _addWorkoutCommand
+        End Get
+        Set(ByVal value As ICommand)
+            _addWorkoutCommand = value
+            RaiseProp("AddWorkoutCommand")
+        End Set
+    End Property
+
+    Private Function CanExecuteAddWorkoutCommand() As Boolean
+        If NewWorkout Is Nothing
+            Return False
+        End If
+        If NewWorkout.WorkoutTitle = Nothing
+            Return False
+        End If
+        If NewWorkout.WorkoutTitle.Trim() = Nothing
+            Return False
+        End If
+        Return True
+    End Function
+
+    Private Sub CreateAddWorkoutCommand()
+        AddWorkoutCommand = New RelayCommand(AddressOf AddWorkoutExecute, AddressOf CanExecuteAddWorkoutCommand)
+    End Sub
+
+    Private Sub AddWorkoutExecute()
+        AllWorkouts.Workouts.Add(NewWorkout)
+        NewWorkout = New Workout()
+        For Each window As Window In Windows.Application.Current.Windows.OfType (Of AddNewWorkoutWindow)()
+            window.Close()
+        Next
+    End Sub
+
+    'AddVideoToWorkoutCommand
+    Private _addVideoToWorkoutCommand As ICommand
+
+    Public Property AddVideoToWorkoutCommand() As ICommand
+        Get
+            Return _addVideoToWorkoutCommand
+        End Get
+        Set(ByVal value As ICommand)
+            _addVideoToWorkoutCommand = value
+            RaiseProp("AddVideoToWorkoutCommand")
+        End Set
+    End Property
+
+    Private Function CanExecuteAddVideoToWorkoutCommand() As Boolean
+        If ChosenWorkout Is Nothing
+            Return False
+        End If
+        Return True
+    End Function
+
+    Private Sub CreateAddVideoToWorkoutCommand()
+        AddVideoToWorkoutCommand = New RelayCommand(AddressOf AddVideoToWorkoutExecute, AddressOf CanExecuteAddVideoToWorkoutCommand)
+    End Sub
+
+    Private Sub AddVideoToWorkoutExecute()
+        ChosenWorkout.WorkoutVideos.Videos.Add(SelectedVideo)
+         For Each window As Window In Windows.Application.Current.Windows.OfType (Of AddVideoToWorkoutWindow)()
+            window.Close()
+        Next
+        MsgBox("""" & SelectedVideo.VideoTitle & """ wurde erfolgreich zu """ & ChosenWorkout.WorkoutTitle & """ hinzugefügt.", MsgBoxStyle.Information, _
+               "Hinzufügen erfolgreich")
+    End Sub
 #End Region
 
     Public Sub RaiseProp(ByVal propertie As String)

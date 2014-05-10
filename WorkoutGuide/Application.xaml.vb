@@ -11,6 +11,10 @@
         MainViewModel.SearchedVideos = New VideosList()
         MainViewModel.SearchCaracteristics = New SearchFeatures(Nothing, New Categories(), New Difficulty(), New Duration(), New DateAdded())
         MainViewModel.NewVideo = New Video()
+        MainViewModel.AllWorkouts = New WorkoutsList()
+        MainViewModel.NewWorkout = New Workout()
+        MainViewModel.ChosenWorkout = New Workout()
+        MainViewModel.SelectedVideo = New Video()
 
         Dim testCategories As Categories = New Categories(False, False, False, False, True, True, False, False, False, False)
 
@@ -29,5 +33,9 @@
         MainViewModel.AllVideos.Videos.Add(MainViewModel.GetVideo("https://www.youtube.com/watch?v=s3zAG4zvVpc", Today, 2, testDifficulty2, testCategories))
 
         MainViewModel.SearchedVideos = MainViewModel.AllVideos
+
+
+        MainViewModel.AllWorkouts.Workouts.Add(New Workout("Mein Lieblingsworkout", "In diesem Workout finden sich all meine Lieblingsübungen wieder", _
+                                                           MainViewModel.AllVideos))
     End Sub
 End Class

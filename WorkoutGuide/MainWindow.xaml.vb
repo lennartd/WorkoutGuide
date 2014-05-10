@@ -7,7 +7,7 @@
         TreeViewCategories.MinHeight = TreeViewCategories.ActualHeight
 
 
-        MainViewModel.SaveToXml()
+        
     End Sub
 
 End Class

@@ -22,6 +22,22 @@ InitializeComponent
 	<summary>
 RatingControl
 </summary>
+</member><member name="M:WorkoutGuide.AddNewWorkoutWindow.InitializeComponent">
+	<summary>
+InitializeComponent
+</summary>
+</member><member name="T:WorkoutGuide.AddNewWorkoutWindow">
+	<summary>
+AddNewWorkoutWindow
+</summary>
+</member><member name="M:WorkoutGuide.AddVideoToWorkoutWindow.InitializeComponent">
+	<summary>
+InitializeComponent
+</summary>
+</member><member name="T:WorkoutGuide.AddVideoToWorkoutWindow">
+	<summary>
+AddVideoToWorkoutWindow
+</summary>
 </member><member name="M:WorkoutGuide.Application.InitializeComponent">
 	<summary>
 InitializeComponent

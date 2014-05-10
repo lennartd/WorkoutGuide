@@ -21,3 +21,7 @@ C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuid
 C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\bin\Debug\Microsoft.Expression.Interactions.xml
 C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\bin\Debug\System.Windows.Interactivity.xml
 C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\WorkoutGuide.vbprojResolveAssemblyReference.cache
+C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\AddNewWorkoutWindow.baml
+C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\AddNewWorkoutWindow.g.vb
+C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\AddVideoToWorkoutWindow.baml
+C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\AddVideoToWorkoutWindow.g.vb

@@ -5,7 +5,9 @@ Public Class Video
     Implements INotifyPropertyChanged
 
     Public Sub New()
-
+        CreateOpenLinkCommand()
+        CreateOpenAddVideoToWorkoutWindowCommand()
+        CreateDeleteVideoCommand()
     End Sub
 
     Public Sub New(ByVal url As String, ByVal title As String, ByVal author As String, ByVal description As String, ByVal duration As Integer, _
@@ -16,6 +18,8 @@ Public Class Video
 
 
         CreateOpenLinkCommand()
+        CreateOpenAddVideoToWorkoutWindowCommand()
+        CreateDeleteVideoCommand()
     End Sub
 
     Private _url As String
@@ -85,7 +89,6 @@ Public Class Video
     End Property
 
     Private _dateAdded As Date
-
     Public Property VideoDateAdded() As Date
         Get
             Return _dateAdded
@@ -97,7 +100,6 @@ Public Class Video
     End Property
 
     Private _rating As Integer
-
     Public Property VideoRating() As Integer
         Get
             Return _rating
@@ -143,6 +145,8 @@ Public Class Video
 
 
     #Region "Commands"
+        
+        'OpenLinkCommand
         Private _openLinkCommand As ICommand
         Public Property OpenLinkCommand() As ICommand
             Get
@@ -168,9 +172,69 @@ Public Class Video
         Private Sub OpenLinkExecute
             Process.Start(VideoUrl)
         End Sub
-    #End Region
 
-   
+        'OpenAddVideoToWorkoutWindowCommand
+    Private _openAddVideoToWorkoutWindowCommand As ICommand
+
+    Public Property OpenAddVideoToWorkoutWindowCommand() As ICommand
+        Get
+            Return _openAddVideoToWorkoutWindowCommand
+        End Get
+        Set(ByVal value As ICommand)
+            _openAddVideoToWorkoutWindowCommand = value
+            RaiseProp("OpenAddVideoToWorkoutWindowCommand")
+        End Set
+    End Property
+
+    Private Function CanExecuteOpenAddVideoToWorkoutWindowCommand() As Boolean
+        If MainViewModel.AllWorkouts.Workouts.Count = 0
+            Return False
+        End If
+        Return True
+    End Function
+
+    Private Sub CreateOpenAddVideoToWorkoutWindowCommand()
+        OpenAddVideoToWorkoutWindowCommand = New RelayCommand(AddressOf OpenAddVideoToWorkoutWindowExecute, AddressOf CanExecuteOpenAddVideoToWorkoutWindowCommand)
+    End Sub
+
+    Private Sub OpenAddVideoToWorkoutWindowExecute()
+        MainViewModel.SelectedVideo = Me
+        Dim window As AddVideoToWorkoutWindow = New AddVideoToWorkoutWindow()
+        window.Show()
+    End Sub
+
+    'DeleteVideoCommand
+    Private _deleteVideoCommand As ICommand
+
+    Public Property DeleteVideoCommand() As ICommand
+        Get
+            Return _deleteVideoCommand
+        End Get
+        Set(ByVal value As ICommand)
+            _deleteVideoCommand = value
+            RaiseProp("DeleteVideoCommand")
+        End Set
+    End Property
+
+    Private Function CanExecuteDeleteVideoCommand() As Boolean
+        Return True
+    End Function
+
+    Private Sub CreateDeleteVideoCommand()
+        DeleteVideoCommand = New RelayCommand(AddressOf DeleteVideoExecute, AddressOf CanExecuteDeleteVideoCommand)
+    End Sub
+
+    Private Sub DeleteVideoExecute()
+        Dim result As MsgBoxResult = MsgBox("Möchten Sie das ausgewählte Video """ & VideoTitle & """ wirklich löschen?", MsgBoxStyle.YesNoCancel, "Video löschen")
+        If result = MsgBoxResult.Yes
+            MainViewModel.AllVideos.Videos.Remove(Me)
+            MainViewModel.SearchedVideos.Videos.Remove(Me)
+            MsgBox("Das Video """ & VideoTitle & """ wurde erfolgreich entfernt.", MsgBoxStyle.Information, "Video löschen")
+        End If
+        
+    End Sub
+
+    #End Region
 
     Public Sub RaiseProp(ByVal propertie As String)
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertie))

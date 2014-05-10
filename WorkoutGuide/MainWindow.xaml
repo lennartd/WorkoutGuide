@@ -82,7 +82,7 @@
             </Setter>
             <Setter Property="Focusable" Value="False"/>
         </Style>
-        
+
         <Style x:Key="RadioButtonListBox" TargetType="{x:Type ListBoxItem}">
             <Setter Property="ContentTemplate">
                 <Setter.Value>
@@ -104,7 +104,7 @@
             </Setter>
             <Setter Property="Cursor" Value="Hand"></Setter>
         </Style>
-        
+
         <Style x:Key="SubHeadings" TargetType="{x:Type Label}">
             <Setter Property="ContentTemplate">
                 <Setter.Value>
@@ -123,18 +123,18 @@
                 <Setter.Value>10,0,0,0</Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style x:Key="Headings" TargetType="{x:Type Label}">
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
             <Setter Property="FontSize" Value="40"></Setter>
             <Setter Property="FontWeight" Value="Bold"></Setter>
         </Style>
-        
+
         <Style x:Key="SimpleListboxItem" TargetType="{x:Type ListBoxItem}">
             <Setter Property="FontSize" Value="15"></Setter>
             <Setter Property="Focusable" Value="False"></Setter>
         </Style>
-        
+
         <Style x:Key="CheckBoxListboxItem" TargetType="{x:Type ListBoxItem}">
             <Setter Property="ContentTemplate">
                 <Setter.Value>
@@ -145,9 +145,9 @@
             </Setter>
             <Setter Property="Margin" Value="3.5"></Setter>
         </Style>
-        
+
     </Window.Resources>
-    
+
     <Window.DataContext>
         <local:ViewModel/>
     </Window.DataContext>
@@ -160,10 +160,6 @@
                         <RowDefinition Height="30"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-
-                    <Grid Grid.Row ="0">
-                        <!--Button to open new window to add videos-->
-                    </Grid>
 
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
@@ -203,7 +199,7 @@
                                             </TextBox>
                                         </StackPanel>
 
-                                        <Label Style="{StaticResource SubHeadings}">Kategorie:</Label>
+                                        <Label Style="{StaticResource SubHeadings}">Kategorien:</Label>
                                         <TreeView Name="TreeViewCategories" x:FieldModifier="Private" Background="#FFFBFBFB" Margin="10">
                                             <TreeViewItem Header="Muskelaufbau" Style="{StaticResource CheckBoxTreeviewItemHeader}" 
                                                           IsExpanded="{Binding SearchCaracteristics.SearchFeaturesCategories.CategoriesAllMuscles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=True}">
@@ -480,14 +476,16 @@
                             <Grid Grid.Row="1" Margin="5">
                                 <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5">
                                     <ItemsControl ItemsSource="{Binding SearchedVideos.Videos}">
+                                       
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Grid Margin="0,10">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="1*"></ColumnDefinition>
                                                         <ColumnDefinition Width="3*"></ColumnDefinition>
+                                                        <ColumnDefinition Width="9*"></ColumnDefinition>
+                                                        <ColumnDefinition Width="1*"></ColumnDefinition>
                                                     </Grid.ColumnDefinitions>
-
+                                                    
                                                     <Grid Grid.Column="0">
                                                         <Grid.RowDefinitions>
                                                             <RowDefinition Height="*"></RowDefinition>
@@ -495,11 +493,11 @@
                                                         </Grid.RowDefinitions>
 
                                                         <Button Grid.Row="0" Name="ButtonVideoImage"    
-                                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.ResetSearchCommand}">
+                                                            Command="{Binding OpenLinkCommand}">
                                                             <Button.Template>
                                                                 <ControlTemplate>
                                                                     <Image Source="{Binding VideoImage}"
-                                                       Cursor="Hand"></Image>
+                                                                    Cursor="Hand"></Image>
                                                                 </ControlTemplate>
                                                             </Button.Template>
                                                         </Button>
@@ -533,6 +531,102 @@
                                                        FontStyle="Italic" TextWrapping="Wrap"></TextBlock>
                                                         </StackPanel>
                                                     </Viewbox>
+
+                                                    <Grid Grid.Column="2">
+                                                        <Button Margin="2"
+                                                                HorizontalAlignment="Center"
+                                                                Background="#FFFBFBFB"
+                                                                FontSize="20"
+                                                                VerticalAlignment="Top">
+                                                            <Button.ToolTip>
+                                                                <ToolTip>
+                                                                    <TextBlock>Zusätzliche Optionen</TextBlock>
+                                                                </ToolTip>
+                                                            </Button.ToolTip>
+                                                            <Button.Template>
+                                                                <ControlTemplate>
+                                                                    <Label HorizontalAlignment="Center"
+                                                                               VerticalAlignment="Center"
+                                                                               FontSize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=FontSize}">...</Label>
+                                                                </ControlTemplate>
+                                                            </Button.Template>
+                                                            <Button.Triggers>
+                                                                <EventTrigger RoutedEvent="Button.MouseEnter">
+                                                                    <BeginStoryboard>
+                                                                        <Storyboard>
+                                                                            <DoubleAnimation Storyboard.TargetProperty="FontSize"
+                                                                                             To="30"
+                                                                                             Duration="0:0:0.3"></DoubleAnimation>
+                                                                        </Storyboard>
+                                                                    </BeginStoryboard>
+                                                                </EventTrigger>
+                                                                <EventTrigger RoutedEvent="Button.MouseLeave">
+                                                                    <BeginStoryboard>
+                                                                        <Storyboard>
+                                                                            <DoubleAnimation Storyboard.TargetProperty="FontSize"
+                                                                                             To="20"
+                                                                                             Duration="0:0:0.3"></DoubleAnimation>
+                                                                        </Storyboard>
+                                                                    </BeginStoryboard>
+                                                                </EventTrigger>
+                                                            </Button.Triggers>
+                                                            <Button.Style>
+                                                                <Style TargetType="{x:Type Button}">
+                                                                    <Style.Triggers>
+                                                                        <EventTrigger RoutedEvent="Click">
+                                                                            <EventTrigger.Actions>
+                                                                                <BeginStoryboard>
+                                                                                    <Storyboard>
+                                                                                        <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="ContextMenu.IsOpen">
+                                                                                            <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="True"/>
+                                                                                        </BooleanAnimationUsingKeyFrames>
+                                                                                    </Storyboard>
+                                                                                </BeginStoryboard>
+                                                                            </EventTrigger.Actions>
+                                                                        </EventTrigger>
+                                                                    </Style.Triggers>
+                                                                    <Setter Property="ContextMenu">
+                                                                        <Setter.Value>
+                                                                            <ContextMenu>
+                                                                                <MenuItem Header="Zu Workout hinzufügen"
+                                                                                          Command="{Binding OpenAddVideoToWorkoutWindowCommand}">
+                                                                                    <MenuItem.ToolTip>
+                                                                                        <ToolTip>
+                                                                                            <StackPanel>
+                                                                                                <TextBlock FontWeight="Bold">Zu Workout hinzufügen</TextBlock>
+                                                                                                <TextBlock>Fügt das ausgewählte Video zu einem Workout hinzu.</TextBlock>
+                                                                                            </StackPanel>
+                                                                                        </ToolTip>
+                                                                                    </MenuItem.ToolTip>
+                                                                                    <MenuItem.Icon>
+                                                                                        <Image Source="Images/plus.ico"
+                                                                                               Width="20"
+                                                                                               Height="20"></Image>
+                                                                                    </MenuItem.Icon>
+                                                                                </MenuItem>
+                                                                                <MenuItem Header="Video löschen"
+                                                                                          Command="{Binding DeleteVideoCommand}">
+                                                                                    <MenuItem.ToolTip>
+                                                                                        <ToolTip>
+                                                                                            <StackPanel>
+                                                                                                <TextBlock FontWeight="Bold">Löschen</TextBlock>
+                                                                                                <TextBlock>Löscht das ausgewählte Video unwideruflich.</TextBlock>
+                                                                                            </StackPanel>
+                                                                                        </ToolTip>
+                                                                                    </MenuItem.ToolTip>
+                                                                                    <MenuItem.Icon>
+                                                                                        <Image Source="Images/delete.ico"
+                                                                                               Width="20"
+                                                                                               Height="20"></Image>
+                                                                                    </MenuItem.Icon>
+                                                                                </MenuItem>
+                                                                            </ContextMenu>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Style>
+                                                            </Button.Style>
+                                                        </Button>
+                                                    </Grid>
                                                 </Grid>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
@@ -677,20 +771,205 @@
                                 </StackPanel>
 
                             </StackPanel>
-                            
+
                         </StackPanel>
                         <Button Grid.Column="1" Grid.Row="1" Width="150" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                                 Margin="10" Command="{Binding AddVideoCommand}">Video hinzufügen</Button>
                     </Grid>
-                    
-                    
+
+
                     <Rectangle Grid.Row="3" Fill="#FF999999" Opacity="0.7"></Rectangle>
                     <Label Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" FontSize="15"
                            Foreground="White" Content="{Binding StatusInformation}"></Label>
                 </Grid>
             </TabItem>
+            <TabItem Header="Workouts">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="10*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Column="0" Grid.Row="0"
+                            Grid.RowSpan="2"
+                            BorderBrush="Black"
+                            BorderThickness="0,0,2,0">
+                    </Border>
+                    <Grid Grid.Column="0" Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0"
+                               Style="{StaticResource SubHeadings}"
+                               VerticalAlignment="Center">Workouts</Label>
+                        <Button Grid.Column="1"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right"
+                                Margin="0,12,10,10"
+                                FontWeight="Bold"
+                                FontSize="20"
+                                HorizontalContentAlignment="Center"
+                                Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                                Background="#FFFBFBFB"
+                                Command="{Binding OpenAddNewWorkoutWindowCommand}">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Border x:Name="PlusButtonBorder" BorderBrush="Black"
+                                            BorderThickness="1" >
+                                        <Label HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               FontSize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=FontSize}">+</Label>
+                                       <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <MultiTrigger>
+                                                        <MultiTrigger.Conditions>
+                                                            <Condition Property="IsEnabled" Value="True"></Condition>
+                                                            <Condition Property="IsMouseOver" Value="True"></Condition>
+                                                        </MultiTrigger.Conditions>
+                                                        <MultiTrigger.Setters>
+                                                            <Setter Property="Background" Value="LightGreen"></Setter>
+                                                        </MultiTrigger.Setters>
+                                                    </MultiTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                    </Border>
+   
+                                </ControlTemplate>
+                            </Button.Template>
+                            
+                            <Button.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold">Workout hinzufügen</TextBlock>
+                                        <TextBlock>Fügt der Liste ein neues Workout hinzu.</TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                            
+                        </Button>
+                    </Grid>
+                    <Viewbox Grid.Column="0" Grid.Row="1"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Stretch="Uniform">
+                        <ListBox
+                             Margin="10"
+                             Background="#FFFBFBFB"
+                             ItemsSource="{Binding AllWorkouts.Workouts}"
+                             SelectionMode="Single"
+                             SelectedItem="{Binding SelectedWorkout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Black"
+                                            BorderThickness="0,0,0,1"
+                                            Width="300">
+                                        <StackPanel Orientation="Vertical"
+                                                VerticalAlignment="Center">
+                                            <Label Content="{Binding WorkoutTitle}"
+                                               FontWeight="Bold"
+                                               FontSize="16"></Label>
+                                            <TextBlock Margin="10"
+                                                  FontStyle="Italic"
+                                                  FontSize="12"
+                                                  TextWrapping="Wrap"
+                                       Text="{Binding WorkoutDescription}"></TextBlock>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Viewbox>
+                    <Viewbox Grid.Row="0" Grid.Column="1"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top">
+                        <StackPanel  Orientation="Vertical"
+                                VerticalAlignment="Center"
+                                Margin="0,2,0,0">
+                            <Label Content="{Binding SelectedWorkout.WorkoutTitle}"
+                               FontWeight="Bold"
+                               FontSize="16"></Label>
+                            <TextBlock Margin="10"
+                                   FontStyle="Italic"
+                                   FontSize="12"
+                                   TextWrapping="Wrap"
+                                   Text="{Binding SelectedWorkout.WorkoutDescription}"></TextBlock>
+                        </StackPanel>
+                    </Viewbox>
+
+                    <Grid Grid.Row="1" Grid.Column="1"
+                          Margin="5">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5">
+                            <ItemsControl ItemsSource="{Binding SelectedWorkout.WorkoutVideos.Videos}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Grid.Column="0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"></RowDefinition>
+                                                    <RowDefinition Height="30"></RowDefinition>
+                                                </Grid.RowDefinitions>
+
+                                                <Button Grid.Row="0" Name="ButtonVideoImage"    
+                                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.ResetSearchCommand}">
+                                                    <Button.Template>
+                                                        <ControlTemplate>
+                                                            <Image Source="{Binding VideoImage}"
+                                                       Cursor="Hand"></Image>
+                                                        </ControlTemplate>
+                                                    </Button.Template>
+                                                </Button>
+
+                                                <Grid Grid.Row="1" Margin="0,3,0,0" >
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <local:RatingControl HorizontalAlignment="Left" VerticalAlignment="Top"></local:RatingControl>
+                                                    <Label Grid.Column="1" Content="{Binding VideoDuration, Converter={StaticResource TimeConv}}"
+                                                   HorizontalAlignment="Right" VerticalAlignment="Top"></Label>
+                                                </Grid>
+
+                                            </Grid>
+
+                                            <Viewbox Grid.Column="1" VerticalAlignment="Top">
+                                                <StackPanel  Orientation="Vertical" Margin="5"
+                                                         Width="500">
+                                                    <Button Name="ButtonVideoTitle" Command="{Binding OpenLinkCommand}"
+                                                        Style="{StaticResource HyperlinkLikeButton}">
+                                                        <TextBlock Text="{Binding VideoTitle}"
+                                                       FontWeight="Bold" FontSize="15"
+                                                           TextWrapping="Wrap"></TextBlock>
+                                                    </Button>
+
+                                                    <TextBlock Text="{Binding VideoAuthor, StringFormat='von {0}'}"
+                                                           FontSize="13" FontWeight="Bold" TextWrapping="Wrap"></TextBlock>
+                                                    <TextBlock Text="{Binding VideoDescription}"
+                                                       FontStyle="Italic" TextWrapping="Wrap"></TextBlock>
+                                                </StackPanel>
+                                            </Viewbox>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
-   
+
 </Window>
 

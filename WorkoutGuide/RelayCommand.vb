@@ -52,5 +52,16 @@ Public Custom Event CanExecuteChanged As EventHandler Implements ICommand.CanExe
     End Sub
 #End Region
 
+    Private m_ParameterValue As Object
+    Public Property ParameterValue() As Object
+	Get
+		Return m_ParameterValue
+	End Get
+	Set
+		m_ParameterValue = Value
+	End Set
+End Property
+
+
 End Class
 
