@@ -205,7 +205,6 @@ Public Class Video
 
     'DeleteVideoCommand
     Private _deleteVideoCommand As ICommand
-
     Public Property DeleteVideoCommand() As ICommand
         Get
             Return _deleteVideoCommand
@@ -229,6 +228,9 @@ Public Class Video
         If result = MsgBoxResult.Yes
             MainViewModel.AllVideos.Videos.Remove(Me)
             MainViewModel.SearchedVideos.Videos.Remove(Me)
+            For i = 0 To MainViewModel.AllWorkouts.Workouts.Count - 1
+                MainViewModel.AllWorkouts.Workouts(i).WorkoutVideos.Videos.Remove(Me)
+            Next
             MsgBox("Das Video """ & VideoTitle & """ wurde erfolgreich entfernt.", MsgBoxStyle.Information, "Video löschen")
         End If
         
