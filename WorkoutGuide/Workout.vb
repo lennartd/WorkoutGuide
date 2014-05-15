@@ -1,5 +1,7 @@
 ﻿Imports System.ComponentModel
+Imports ProtoBuf
 
+<ProtoContract> _
 Public Class Workout
      Implements INotifyPropertyChanged
 
@@ -12,6 +14,7 @@ Public Class Workout
     End Sub
 
     Private _title As String
+    <ProtoMember(1)> _
     Public Property WorkoutTitle() As String
         Get
             Return _title
@@ -23,6 +26,7 @@ Public Class Workout
     End Property
 
     Private _description As String
+    <ProtoMember(2)> _
     Public Property WorkoutDescription() As String
         Get
             Return _description
@@ -34,6 +38,7 @@ Public Class Workout
     End Property
 
     Private _videos As New VideosList
+    <ProtoMember(3)> _
     Public Property WorkoutVideos() As VideosList
         Get
             Return _videos

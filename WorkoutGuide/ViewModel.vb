@@ -1,11 +1,10 @@
 ﻿Imports System.Net
 Imports System.ComponentModel
 Imports System.IO
-Imports System.Xml.Serialization
+Imports ProtoBuf
 
 Public Class ViewModel
     Implements INotifyPropertyChanged
-
 
     Public Sub New ()
         CreateAdjustSearchResultsCommand()
@@ -109,7 +108,7 @@ Public Class ViewModel
 
     Private _selectedVideo As Video
     Public Property SelectedVideo() As Video
-        Get
+        Private Get
             Return _selectedVideo
         End Get
         Set(ByVal value As Video)
@@ -167,12 +166,12 @@ Public Class ViewModel
         Dim splitStringImageUrlEnd As String() = New String() {""">"}
         Dim imageUrl As String = sourceString.Split(splitStringImageUrlStart, StringSplitOptions.None)(1).Split(splitStringImageUrlEnd, StringSplitOptions.None)(0)
 
-        Return New Video(url, title, author, description, duration, GetImage(imageUrl), dateAdded, rating, difficulty, categories, True)
+        Return New Video(url, title, author, description, duration, imageUrl, GetImage(imageUrl), dateAdded, rating, difficulty, categories, True)
     End Function
 
-    Private Function GetImage(ByVal pictureurl As String) As Windows.Media.ImageSource
+    Private Function GetImage(ByVal imageUrl As String) As Windows.Media.ImageSource
 
-        Dim webUri As New Uri(pictureurl)
+        Dim webUri As New Uri(imageUrl)
         Dim bDecoder As BitmapDecoder = BitmapDecoder.Create(webUri, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.None)
 
         If bDecoder IsNot Nothing AndAlso bDecoder.Frames.Count > 0 Then
@@ -193,15 +192,38 @@ Public Class ViewModel
         Return False
     End Function
 
-    Public Sub SaveToXml()
+    Public Sub SaveToBinary()
         If Not Directory.Exists(FilesDirectory)
             Directory.CreateDirectory(FilesDirectory)
         End If
-        'Serialize object to a text file.
-        Dim objStreamWriter As New StreamWriter(FilesDirectory & "\Data.xml")
-        Dim x As New XmlSerializer(AllVideos.GetType)
-        x.Serialize(objStreamWriter, AllVideos)
-        objStreamWriter.Close()
+
+        Using file1 = File.Create(FilesDirectory & "\AllVideos.bin")
+            Serializer.Serialize(file1, AllVideos)
+        End Using
+        Using file2 = File.Create(FilesDirectory & "\AllWorkouts.bin")
+            Serializer.Serialize(file2, AllWorkouts)
+        End Using
+    End Sub
+
+    Public Sub LoadFromBinary()
+        If File.Exists(FilesDirectory & "\AllVideos.bin")
+            Using file1 = File.OpenRead(FilesDirectory & "\AllVideos.bin")
+	            AllVideos = Serializer.Deserialize(Of VideosList)(file1)
+            End Using
+            for i = 0 To AllVideos.Videos.Count - 1
+                AllVideos.Videos(i).VideoImage = GetImage(AllVideos.Videos(i).VideoImageUrl)
+            Next
+        End If
+        If File.Exists(FilesDirectory & "\AllWorkouts.bin")
+            Using file2 = File.OpenRead(FilesDirectory & "\AllWorkouts.bin")
+	            AllWorkouts = Serializer.Deserialize(Of WorkoutsList)(file2)
+            End Using
+            for i = 0 To AllWorkouts.Workouts.Count - 1
+                for j = 0 To AllWorkouts.Workouts(i).WorkoutVideos.Videos.Count - 1
+                    AllWorkouts.Workouts(i).WorkoutVideos.Videos(j).VideoImage = GetImage(AllWorkouts.Workouts(i).WorkoutVideos.Videos(j).VideoImageUrl)
+                Next
+            Next
+        End If
     End Sub
 
 #Region "Commands"
@@ -478,7 +500,7 @@ Public Class ViewModel
     End Sub
 
     Private Sub ResetSearchExecute()
-        SearchCaracteristics = New SearchFeatures(Nothing, New Categories(), New Difficulty(), New Duration(), New DateAdded())
+        SearchCaracteristics = New SearchFeatures(Nothing, New Categories(True, True, True, True, True, True, True, True, True, True), New Difficulty(), New Duration(), New DateAdded())
     End Sub
 
     'OpenAddNewWorkoutWindowCommand

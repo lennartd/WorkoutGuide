@@ -1,5 +1,7 @@
 ﻿Imports System.ComponentModel
+Imports ProtoBuf
 
+<ProtoContract> _
 Public Class Categories
     Implements INotifyPropertyChanged
     
@@ -17,20 +19,12 @@ Public Class Categories
         _triceps = triceps
     End Sub
 
-    Public Sub New()
-        _allMuscles = True
-        _abs = True
-        _back = True
-        _biceps = True
-        _cardio = True
-        _chest = True
-        _leg = True
-        _shoulder = True
-        _speed = True
-        _triceps = True
+    Public Sub New ()
+
     End Sub
 
     Private _allMuscles As Boolean
+    <ProtoMember(1)> _
     Public Property CategoriesAllMuscles() As Boolean
         Get
             Return _allMuscles
@@ -42,6 +36,7 @@ Public Class Categories
     End Property
 
     Private _abs As Boolean
+    <ProtoMember(2)> _
     Public Property CategoriesAbs() As Boolean
         Get
             Return _abs
@@ -53,6 +48,7 @@ Public Class Categories
     End Property
 
     Private _back As Boolean
+    <ProtoMember(3)> _
     Public Property CategoriesBack() As Boolean
         Get
             Return _back
@@ -64,6 +60,7 @@ Public Class Categories
     End Property
 
     Private _biceps As Boolean
+    <ProtoMember(4)> _
     Public Property CategoriesBiceps() As Boolean
         Get
             Return _biceps
@@ -75,6 +72,7 @@ Public Class Categories
     End Property
    
     Private _cardio As Boolean
+    <ProtoMember(5)> _
     Public Property CategoriesCardio() As Boolean
         Get
             Return _cardio
@@ -86,6 +84,7 @@ Public Class Categories
     End Property
 
     Private _chest As Boolean
+    <ProtoMember(6)> _
     Public Property CategoriesChest() As Boolean
         Get
             Return _chest
@@ -97,6 +96,7 @@ Public Class Categories
     End Property
 
     Private _leg As Boolean
+    <ProtoMember(7)> _
     Public Property CategoriesLeg() As Boolean
         Get
             Return _leg
@@ -108,6 +108,7 @@ Public Class Categories
     End Property
 
     Private _shoulder As Boolean
+    <ProtoMember(8)> _
     Public Property CategoriesShoulder() As Boolean
         Get
             Return _shoulder
@@ -119,6 +120,7 @@ Public Class Categories
     End Property
 
     Private _speed As Boolean
+    <ProtoMember(9)> _
     Public Property CategoriesSpeed() As Boolean
         Get
             Return _speed
@@ -130,6 +132,7 @@ Public Class Categories
     End Property
 
     Private _triceps As Boolean
+    <ProtoMember(10)> _
     Public Property CategoriesTriceps() As Boolean
         Get
             Return _triceps

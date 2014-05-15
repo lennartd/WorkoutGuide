@@ -1,8 +1,10 @@
 ﻿Imports System.ComponentModel
+Imports ProtoBuf
 
+<ProtoContract> _
 Public Class Difficulty
     Implements INotifyPropertyChanged
-    
+
     Public Sub New(ByVal easy As Boolean, ByVal intermediate As Boolean, ByVal difficult As Boolean, ByVal doesntMatter As Boolean)
         _easy = easy
         _intermediate = intermediate
@@ -15,6 +17,7 @@ Public Class Difficulty
     End Sub
 
     Private _easy As Boolean
+    <ProtoMember(1)> _
     Public Property DifficultyEasy() As Boolean
         Get
             Return _easy
@@ -26,6 +29,7 @@ Public Class Difficulty
     End Property
 
     Private _intermediate As Boolean
+    <ProtoMember(2)> _
     Public Property DifficlutyIntermediate() As Boolean
         Get
             Return _intermediate
@@ -37,6 +41,7 @@ Public Class Difficulty
     End Property
 
     Private _difficult As Boolean
+    <ProtoMember(3)> _
     Public Property DifficultyDifficult() As Boolean
         Get
             Return _difficult
@@ -48,6 +53,7 @@ Public Class Difficulty
     End Property
 
     Private _doesntMatter As Boolean
+    <ProtoMember(4)> _
     Public Property DifficultyDoesntMatter() As Boolean
         Get
             Return _doesntMatter

@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
+Imports ProtoBuf
 
-<Serializable()> _
+<ProtoContract> _
 Public Class Video
     Implements INotifyPropertyChanged
 
@@ -11,10 +12,11 @@ Public Class Video
     End Sub
 
     Public Sub New(ByVal url As String, ByVal title As String, ByVal author As String, ByVal description As String, ByVal duration As Integer, _
+                   ByVal imageUrl As String, _
                    ByVal image As Windows.Media.ImageSource, ByVal dateAdded As Date, ByVal rating As Integer, ByVal difficulty As Difficulty, _
                    ByVal categories As Categories, ByVal urlOk As Boolean)
         _url = url : _title = title : _author = author : _description = description : _duration = duration : _image = image : _dateAdded = dateAdded
-        _rating = rating : _difficulty = difficulty : _categories = categories : _urlOk = urlOk
+        _rating = rating : _difficulty = difficulty : _categories = categories : _urlOk = urlOk : _imageUrl = imageUrl
 
 
         CreateOpenLinkCommand()
@@ -23,6 +25,7 @@ Public Class Video
     End Sub
 
     Private _url As String
+    <ProtoMember(1)> _
     Public Property VideoUrl() As String
         Get
             Return _url
@@ -34,6 +37,7 @@ Public Class Video
     End Property
 
     Private _title As String
+    <ProtoMember(2)> _
     Public Property VideoTitle() As String
         Get
             Return _title
@@ -45,6 +49,7 @@ Public Class Video
     End Property
 
     Private _author As String
+    <ProtoMember(3)> _
     Public Property VideoAuthor() As String
         Get
             Return _author
@@ -56,6 +61,7 @@ Public Class Video
     End Property
 
     Private _description As String
+    <ProtoMember(4)> _
     Public Property VideoDescription() As String
         Get
             Return _description
@@ -67,6 +73,7 @@ Public Class Video
     End Property
 
     Private _duration As Integer 'in sec
+    <ProtoMember(5)> _
     Public Property VideoDuration() As Integer
         Get
             Return _duration
@@ -74,6 +81,18 @@ Public Class Video
         Set(ByVal value As Integer)
             _duration = value
             RaiseProp("VideoDuration")
+        End Set
+    End Property
+
+    Private _imageUrl As String
+    <ProtoMember(6)> _
+    Public Property VideoImageUrl() As String
+        Get
+            Return _imageUrl
+        End Get
+        Set(ByVal value As String)
+            _imageUrl = value
+            RaiseProp("VideoImageUrl")
         End Set
     End Property
 
@@ -89,6 +108,7 @@ Public Class Video
     End Property
 
     Private _dateAdded As Date
+    <ProtoMember(7)> _
     Public Property VideoDateAdded() As Date
         Get
             Return _dateAdded
@@ -100,6 +120,7 @@ Public Class Video
     End Property
 
     Private _rating As Integer
+    <ProtoMember(8)> _
     Public Property VideoRating() As Integer
         Get
             Return _rating
@@ -111,6 +132,7 @@ Public Class Video
     End Property
 
     Private _difficulty As Difficulty
+    <ProtoMember(9)> _
     Public Property VideoDifficulty() As Difficulty
         Get
             Return _difficulty
@@ -122,6 +144,7 @@ Public Class Video
     End Property
 
     Private _categories As Categories
+    <ProtoMember(10)> _
     Public Property VideoCategories() As Categories
         Get
             Return _categories
@@ -133,6 +156,7 @@ Public Class Video
     End Property
 
     Private _urlOk As Boolean
+    <ProtoMember(11)> _
     Public Property VideoUrlOk() As Boolean
         Get
             Return _urlOk

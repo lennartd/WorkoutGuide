@@ -1,9 +1,11 @@
 ﻿Imports System.Collections.ObjectModel
+Imports ProtoBuf
 
-<Serializable()> _
+<ProtoContract> _
 Public Class VideosList
 
     Private _videos As New ObservableCollection(Of Video)
+    <ProtoMember(1)> _
     Public Property Videos() As ObservableCollection(Of Video)
         Get
             Return _videos
