@@ -444,7 +444,9 @@ Public Class ViewModel
                 Or  NewVideo.VideoCategories.CategoriesTriceps = True
                 If NewVideo.VideoDifficulty.DifficultyEasy = True Or NewVideo.VideoDifficulty.DifficlutyIntermediate = True _
                     Or NewVideo.VideoDifficulty.DifficultyDifficult = True
-                    Return True
+                    If Not NewVideo.VideoRating = 0
+                        Return True
+                    End If
                 End If
             End If
         End If

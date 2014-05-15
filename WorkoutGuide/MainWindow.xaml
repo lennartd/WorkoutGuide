@@ -509,7 +509,9 @@
                                                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                                             </Grid.ColumnDefinitions>
 
-                                                            <local:RatingControl HorizontalAlignment="Left" VerticalAlignment="Top"></local:RatingControl>
+                                                            <local:RatingControl HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                                                 Tag="{Binding VideoRating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                            </local:RatingControl>
                                                             <Label Grid.Column="1" Content="{Binding VideoDuration, Converter={StaticResource TimeConv}}"
                                                    HorizontalAlignment="Right" VerticalAlignment="Top"></Label>
                                                         </Grid>
@@ -763,7 +765,8 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Label VerticalAlignment="Center" Margin="10,10,0,10" FontSize="15">Wertung:</Label>
                                     <local:RatingControl HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                     Height="20" Width="200" Margin="10"></local:RatingControl>
+                                                         Height="20" Width="200" Margin="10"
+                                                         Tag="{Binding NewVideo.VideoRating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></local:RatingControl>
                                 </StackPanel>
 
                             </StackPanel>
@@ -959,7 +962,8 @@
                                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                                     </Grid.ColumnDefinitions>
 
-                                                    <local:RatingControl HorizontalAlignment="Left" VerticalAlignment="Top"></local:RatingControl>
+                                                    <local:RatingControl HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                                         Tag="{Binding VideoRating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></local:RatingControl>
                                                     <Label Grid.Column="1" Content="{Binding VideoDuration, Converter={StaticResource TimeConv}}"
                                                    HorizontalAlignment="Right" VerticalAlignment="Top"></Label>
                                                 </Grid>

@@ -3,35 +3,44 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:workoutGuide="clr-namespace:WorkoutGuide"
+             xmlns:ratingControlTest="clr-namespace:WorkoutGuide"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="RatingControl">
 
+    <UserControl.Resources>
+        <ratingControlTest:TagCheckedConverter x:Key="TagCheckedConv"></ratingControlTest:TagCheckedConverter>
+    </UserControl.Resources>
     <Grid>
-                <Grid.Resources>
-                    <ControlTemplate x:Key="StarTemplate"  TargetType="{x:Type ToggleButton}">
-                        <Viewbox>
-                            <Path Name="star" Fill="Gray" Data="F1 M 145.637,174.227L 127.619,110.39L 180.809,70.7577L 114.528,68.1664L 93.2725,5.33333L 70.3262,67.569L 4,68.3681L 56.0988,109.423L 36.3629,172.75L 91.508,135.888L 145.637,174.227 Z"/>
-                        </Viewbox>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="star" Property="Fill" Value="White"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Grid.Resources>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <ToggleButton Grid.Column="0" Name="RatingButton1" Tag="1" Cursor="Hand" Template="{StaticResource StarTemplate}" Click="RatingButtonClickEventHandler" />
-                <ToggleButton Grid.Column="1" Name="RatingButton2" Tag="2" Cursor="Hand" Template="{StaticResource StarTemplate}" Click="RatingButtonClickEventHandler"/>
-                <ToggleButton Grid.Column="2" Name="RatingButton3" Tag="3" Cursor="Hand" Template="{StaticResource StarTemplate}" Click="RatingButtonClickEventHandler"/>
-                <ToggleButton Grid.Column="3" Name="RatingButton4" Tag="4" Cursor="Hand" Template="{StaticResource StarTemplate}" Click="RatingButtonClickEventHandler"/>
-                <ToggleButton Grid.Column="4" Name="RatingButton5" Tag="5" Cursor="Hand" Template="{StaticResource StarTemplate}" Click="RatingButtonClickEventHandler"/>
+        <Grid.Resources>
+            <ControlTemplate x:Key="StarTemplate"  TargetType="{x:Type ToggleButton}">
+                <Viewbox>
+                    <Path Name="star" Fill="Gray" Data="F1 M 145.637,174.227L 127.619,110.39L 180.809,70.7577L 114.528,68.1664L 93.2725,5.33333L 70.3262,67.569L 4,68.3681L 56.0988,109.423L 36.3629,172.75L 91.508,135.888L 145.637,174.227 Z"/>
+                </Viewbox>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsChecked" Value="True">
+                        <Setter TargetName="star" Property="Fill" Value="Gold"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ToggleButton Grid.Column="0" Name="RatingButton1" Tag="1" Cursor="Hand" Template="{StaticResource StarTemplate}" Click="RatingButtonClickEventHandler1"
+                      IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=Tag, Converter={StaticResource TagCheckedConv}, ConverterParameter=1}"/>
+        <ToggleButton Grid.Column="1" Name="RatingButton2" Tag="2" Cursor="Hand" Template="{StaticResource StarTemplate}" Click="RatingButtonClickEventHandler2"
+                      IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=Tag, Converter={StaticResource TagCheckedConv}, ConverterParameter=2}"/>
+        <ToggleButton Grid.Column="2" Name="RatingButton3" Tag="3" Cursor="Hand" Template="{StaticResource StarTemplate}" Click="RatingButtonClickEventHandler3"
+                      IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=Tag, Converter={StaticResource TagCheckedConv}, ConverterParameter=3}"/>
+        <ToggleButton Grid.Column="3" Name="RatingButton4" Tag="4" Cursor="Hand" Template="{StaticResource StarTemplate}" Click="RatingButtonClickEventHandler4"
+                      IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=Tag, Converter={StaticResource TagCheckedConv}, ConverterParameter=4}"/>
+        <ToggleButton Grid.Column="4" Name="RatingButton5" Tag="5" Cursor="Hand" Template="{StaticResource StarTemplate}" Click="RatingButtonClickEventHandler5"
+                      IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=Tag, Converter={StaticResource TagCheckedConv}, ConverterParameter=5}"/>
 
     </Grid>
 </UserControl>
