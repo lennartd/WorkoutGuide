@@ -107,6 +107,7 @@
     </Compile>
     <Compile Include="RelayCommand.vb" />
     <Compile Include="SearchFeatures.vb" />
+    <Compile Include="SelectedWorkoutVisibilityConverter.vb" />
     <Compile Include="TimeConverter.vb" />
     <Compile Include="Video.vb" />
     <Compile Include="VideoUrlVisibilityConverter.vb" />

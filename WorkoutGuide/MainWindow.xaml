@@ -8,6 +8,7 @@
     <Window.Resources>
         <local:TimeConverter x:Key="TimeConv"></local:TimeConverter>
         <local:VideoUrlVisibilityConverter x:Key="VideoUrlVisibilityConv"></local:VideoUrlVisibilityConverter>
+        <local:SelectedWorkoutVisibilityConverter x:Key="SelectedWorkoutVisibilityConv"></local:SelectedWorkoutVisibilityConverter>
 
         <Style x:Key="HyperlinkLikeButton" TargetType="Button">
             <Setter Property="Template">
@@ -678,13 +679,8 @@
                         </Grid.ColumnDefinitions>
 
                         <Grid Grid.Column="0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="30"></RowDefinition>
-                            </Grid.RowDefinitions>
-
-                            <Button Grid.Row="0"  
-                                                Command="{Binding NewVideo.OpenLinkCommand}">
+                            <Button Command="{Binding NewVideo.OpenLinkCommand}"
+                                    VerticalAlignment="Top">
                                 <Button.Template>
                                     <ControlTemplate>
                                         <Image Source="{Binding NewVideo.VideoImage}"
@@ -885,22 +881,49 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </Viewbox>
-                    <Viewbox Grid.Row="0" Grid.Column="1"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top">
-                        <StackPanel  Orientation="Vertical"
-                                VerticalAlignment="Center"
-                                Margin="0,2,0,0">
-                            <Label Content="{Binding SelectedWorkout.WorkoutTitle}"
+                    <Grid Grid.Row="0" Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="70"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Viewbox Grid.Column="0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top">
+                            <StackPanel Orientation="Vertical"
+                                        VerticalAlignment="Center"
+                                        Margin="0,2,0,0">
+                                <Label Content="{Binding SelectedWorkout.WorkoutTitle}"
                                FontWeight="Bold"
                                FontSize="16"></Label>
-                            <TextBlock Margin="10"
+                                <TextBlock Margin="10"
                                    FontStyle="Italic"
                                    FontSize="12"
                                    TextWrapping="Wrap"
                                    Text="{Binding SelectedWorkout.WorkoutDescription}"></TextBlock>
-                        </StackPanel>
-                    </Viewbox>
+                            </StackPanel>
+                        </Viewbox>
+                        <Grid Grid.Column="1">
+                            <Button HorizontalAlignment="Center"
+                                    Cursor="Hand"
+                                    Visibility="{Binding SelectedWorkout, Converter={StaticResource SelectedWorkoutVisibilityConv}}"
+                                    Command="{Binding DeleteSelectedWorkoutCommand}">
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <Image Source="Images/delete.ico"
+                                                   Width="20"></Image>
+                                    </ControlTemplate>
+                                </Button.Template>
+                                <Button.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold">Workout löschen</TextBlock>
+                                            <TextBlock>Löscht das ausgewählte Workout.</TextBlock>
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Button.ToolTip>
+                            </Button>
+                        </Grid>
+                    </Grid>
 
                     <Grid Grid.Row="1" Grid.Column="1"
                           Margin="5">

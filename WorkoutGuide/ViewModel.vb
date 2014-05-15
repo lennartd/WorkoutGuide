@@ -15,6 +15,7 @@ Public Class ViewModel
         CreateOpenAddNewWorkoutWindowCommand()
         CreateAddWorkoutCommand()
         CreateAddVideoToWorkoutCommand()
+        CreateDeleteSelectedWorkoutCommand()
     End Sub
 
 #Region "Properties"
@@ -596,6 +597,38 @@ Public Class ViewModel
         Next
         MsgBox("""" & SelectedVideo.VideoTitle & """ wurde erfolgreich zu """ & ChosenWorkout.WorkoutTitle & """ hinzugefügt.", MsgBoxStyle.Information, _
                "Hinzufügen erfolgreich")
+    End Sub
+
+    'DeleteSelectedWorkoutCommand
+    Private _deleteSelectedWorkoutCommand As ICommand
+    Public Property DeleteSelectedWorkoutCommand() As ICommand
+        Get
+            Return _deleteSelectedWorkoutCommand
+        End Get
+        Set(ByVal value As ICommand)
+            _deleteSelectedWorkoutCommand = value
+            RaiseProp("DeleteSelectedWorkoutCommand")
+        End Set
+    End Property
+
+    Private Function CanExecuteDeleteSelectedWorkoutCommand() As Boolean
+        If SelectedWorkout Is Nothing
+            Return False
+        End If
+        Return True
+    End Function
+
+    Private Sub CreateDeleteSelectedWorkoutCommand()
+        DeleteSelectedWorkoutCommand = New RelayCommand(AddressOf DeleteSelectedWorkoutExecute, AddressOf CanExecuteDeleteSelectedWorkoutCommand)
+    End Sub
+
+    Private Sub DeleteSelectedWorkoutExecute()
+        Dim result As MsgBoxResult = MsgBox("Möchten Sie das ausgewählte Workout """ & SelectedWorkout.WorkoutTitle & """ wirklich löschen?", _
+                                            MsgBoxStyle.YesNoCancel, "Workout löschen")
+        If result = MsgBoxResult.Yes
+            AllWorkouts.Workouts.Remove(SelectedWorkout)
+            SelectedWorkout = Nothing
+        End If
     End Sub
 #End Region
 
