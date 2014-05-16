@@ -458,6 +458,16 @@ Public Class ViewModel
     End Sub
 
     Private Sub AddVideoExecute
+        for i = 0 To AllVideos.Videos.Count - 1
+            If NewVideo.VideoUrl = AllVideos.Videos(i).VideoUrl
+                Dim result As MsgBoxResult = MsgBox("Das Video """ & NewVideo.VideoTitle & """ wurde bereits hinzugefügt. Trotzdem fortfahren?", _
+                                                    MsgBoxStyle.YesNoCancel, "Mehrfach hinzufügen?")
+                If Not result = MsgBoxResult.Yes
+                    Exit Sub
+                End If
+                Exit For
+            End If
+        Next
         AllVideos.Videos.Add(NewVideo)
         StatusInformation = """" & NewVideo.VideoTitle & """" & " wurde erfolgreich hinzugefügt."
         NewVideo = New Video()
