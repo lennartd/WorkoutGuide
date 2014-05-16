@@ -128,6 +128,22 @@ Public Class Video
         Set(ByVal value As Integer)
             _rating = value
             RaiseProp("VideoRating")
+            for i = 0 To MainViewModel.AllVideos.Videos.Count - 1
+                If VideoUrl = MainViewModel.AllVideos.Videos(i).VideoUrl
+                    If Not VideoRating = MainViewModel.AllVideos.Videos(i).VideoRating
+                        MainViewModel.AllVideos.Videos(i).VideoRating = VideoRating
+                    End If
+                End If
+            Next
+            for i = 0 To MainViewModel.AllWorkouts.Workouts.Count - 1
+                for j = 0 To MainViewModel.AllWorkouts.Workouts(i).WorkoutVideos.Videos.Count - 1
+                    If VideoUrl = MainViewModel.AllWorkouts.Workouts(i).WorkoutVideos.Videos(j).VideoUrl
+                        If Not VideoRating = MainViewModel.AllWorkouts.Workouts(i).WorkoutVideos.Videos(j).VideoRating
+                            MainViewModel.AllWorkouts.Workouts(i).WorkoutVideos.Videos(j).VideoRating = VideoRating
+                        End If
+                    End If
+                Next
+            Next
         End Set
     End Property
 
