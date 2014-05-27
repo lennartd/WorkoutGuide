@@ -154,9 +154,21 @@
         
         <Style x:Key="UpDownToggleButton" TargetType="{x:Type ToggleButton}">
             <Setter Property="Margin" Value="5"></Setter>
-            <Setter Property="Padding" Value="2"></Setter>
+            <Setter Property="Padding" Value="0"></Setter>
             <Setter Property="FontFamily" Value="Marlett"></Setter>
             <Setter Property="FontSize" Value="20"></Setter>
+            <Setter Property="BorderThickness" Value="1"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border BorderBrush="Black"
+                                BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness}"
+                                Cursor="Hand">
+                            <Label Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"></Label>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="True">
                     <Setter Property="Content" Value="5"></Setter>
@@ -164,6 +176,24 @@
                 <Trigger Property="IsChecked" Value="False">
                     <Setter Property="Content" Value="6"></Setter>
                 </Trigger>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ThicknessAnimation Storyboard.TargetProperty="BorderThickness"
+                                             From="1.0" To="2.0"
+                                             Duration="0:0:0.1"></ThicknessAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ThicknessAnimation Storyboard.TargetProperty="BorderThickness"
+                                             From="2.0" To="1.0"
+                                             Duration="0:0:0.1"></ThicknessAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
             </Style.Triggers>
         </Style>
         
@@ -516,7 +546,8 @@
                                               VerticalContentAlignment="Center"
                                               HorizontalContentAlignment="Center"
                                               Margin="5"
-                                              FontSize="15">
+                                              FontSize="15"
+                                              SelectionChanged="SortSearchedVideos">
                                         <ComboBox.Items>
                                             <ComboBoxItem Style="{StaticResource ComboBoxItem}">Titel</ComboBoxItem>
                                             <ComboBoxItem Style="{StaticResource ComboBoxItem}">Wertung</ComboBoxItem>
@@ -526,7 +557,8 @@
                                     </ComboBox>
                                     <ToggleButton x:Name="SortUpDownToggleButton"
                                                   Style="{StaticResource UpDownToggleButton}"
-                                                  IsChecked="True"></ToggleButton>
+                                                  IsChecked="True"
+                                                  Click="SortSearchedVideos"></ToggleButton>
                                 </StackPanel>
                             </Grid>
                             
@@ -871,7 +903,8 @@
                                 HorizontalContentAlignment="Center"
                                 Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
                                 Background="#FFFBFBFB"
-                                Command="{Binding OpenAddNewWorkoutWindowCommand}">
+                                Command="{Binding OpenAddNewWorkoutWindowCommand}"
+                                Cursor="Hand">
                             <Button.Template>
                                 <ControlTemplate>
                                     <Border x:Name="PlusButtonBorder" BorderBrush="Black"
