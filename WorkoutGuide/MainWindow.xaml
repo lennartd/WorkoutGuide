@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:WorkoutGuide"    
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
     x:Name="MainWindow"  Title="Workout Guide" Height="839.225" Width="937">
 
     <Window.Resources>
@@ -146,7 +147,34 @@
             </Setter>
             <Setter Property="Margin" Value="3.5"></Setter>
         </Style>
-
+        
+        <Style x:Key="ComboBoxItem" TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="FontSize" Value="15"></Setter>
+        </Style>
+        
+        <Style x:Key="UpDownToggleButton" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="Padding" Value="2"></Setter>
+            <Setter Property="FontFamily" Value="Marlett"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="5"></Setter>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="False">
+                    <Setter Property="Content" Value="6"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <CollectionViewSource x:Key="SortSearchedVideos"
+                              Source="{Binding SearchedVideos.Videos}"
+                              IsLiveSortingRequested="True">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="VideoTitle"></scm:SortDescription>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        
     </Window.Resources>
 
     <Window.DataContext>
@@ -468,16 +496,45 @@
                                 <RowDefinition Height="15*"></RowDefinition>
                             </Grid.RowDefinitions>
 
-                            <Border Grid.Row="0" Margin="5,0,0,0" BorderThickness="0,0,0,2" BorderBrush="Black">
-                                <Viewbox HorizontalAlignment="Left">
-                                    <Label Style="{StaticResource Headings}">Suchergebnisse:</Label>
-                                </Viewbox>
-                            </Border>
+                            <Grid Grid.Row="0" Margin="5,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Border  BorderThickness="0,0,0,2" BorderBrush="Black" Grid.ColumnSpan="2">
+                                    <Viewbox HorizontalAlignment="Left">
+                                        <Label Style="{StaticResource Headings}">Suchergebnisse:</Label>
+                                    </Viewbox>
+                                </Border>
+                                <StackPanel Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            Margin="5">
+                                    <Label Style="{StaticResource SubHeadings}"
+                                           VerticalAlignment="Center">Sortieren nach:</Label>
+                                    <ComboBox x:Name="SortValuesComboBox"
+                                              SelectedIndex="0"
+                                              VerticalContentAlignment="Center"
+                                              HorizontalContentAlignment="Center"
+                                              Margin="5"
+                                              FontSize="15">
+                                        <ComboBox.Items>
+                                            <ComboBoxItem Style="{StaticResource ComboBoxItem}">Titel</ComboBoxItem>
+                                            <ComboBoxItem Style="{StaticResource ComboBoxItem}">Wertung</ComboBoxItem>
+                                            <ComboBoxItem Style="{StaticResource ComboBoxItem}">Dauer</ComboBoxItem>
+                                            <ComboBoxItem Style="{StaticResource ComboBoxItem}">Hinzugefügt</ComboBoxItem>
+                                        </ComboBox.Items>
+                                    </ComboBox>
+                                    <ToggleButton x:Name="SortUpDownToggleButton"
+                                                  Style="{StaticResource UpDownToggleButton}"
+                                                  IsChecked="True"></ToggleButton>
+                                </StackPanel>
+                            </Grid>
+                            
 
                             <Grid Grid.Row="1" Margin="5">
                                 <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5">
-                                    <ItemsControl ItemsSource="{Binding SearchedVideos.Videos}">
-                                       
+                                    <ItemsControl x:Name="SearchedVideosItemsControl"
+                                                  ItemsSource="{Binding Source={StaticResource SortSearchedVideos}}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Grid Margin="0,10">
