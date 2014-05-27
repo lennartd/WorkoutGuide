@@ -10,6 +10,7 @@
         <local:TimeConverter x:Key="TimeConv"></local:TimeConverter>
         <local:VideoUrlVisibilityConverter x:Key="VideoUrlVisibilityConv"></local:VideoUrlVisibilityConverter>
         <local:SelectedWorkoutVisibilityConverter x:Key="SelectedWorkoutVisibilityConv"></local:SelectedWorkoutVisibilityConverter>
+        <local:StatusToGridHeightConverter x:Key="StatusToGridHeightConv"></local:StatusToGridHeightConverter>
 
         <Style x:Key="HyperlinkLikeButton" TargetType="Button">
             <Setter Property="Template">
@@ -204,7 +205,114 @@
                 <scm:SortDescription PropertyName="VideoTitle"></scm:SortDescription>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-        
+
+        <Style x:Key="CrossButton" TargetType="{x:Type Button}">
+            <Style.Resources>
+                <SolidColorBrush x:Key="NormalForegroundBrush" Color="#FF8f949b" />
+
+                <SolidColorBrush x:Key="HoverBackgroundBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="HoverForegroundBrush" Color="White" />
+
+                <SolidColorBrush x:Key="PressedBackgroundBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="PressedBorderBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="PressedForegroundBrush" Color="#FFf9ebeb" />
+            </Style.Resources>
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="Transparent">
+
+                            <!-- The background of the button, as an ellipse. -->
+                            <Ellipse x:Name="backgroundEllipse"></Ellipse>
+
+                            <Path x:Name="ButtonPath"
+                                  Margin="3"
+                                  Stroke="{StaticResource NormalForegroundBrush}"
+                                  StrokeThickness="1.5"
+                                  StrokeStartLineCap="Square"
+                                  StrokeEndLineCap="Square"
+                                  Stretch="Uniform"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Center">
+                                <Path.Data>
+                                    <PathGeometry>
+                                        <PathGeometry.Figures>
+                                            <PathFigure StartPoint="0,0">
+                                                <LineSegment Point="25,25"/>
+                                            </PathFigure>
+                                            <PathFigure StartPoint="0,25">
+                                                <LineSegment Point="25,0"/>
+                                            </PathFigure>
+                                        </PathGeometry.Figures>
+                                    </PathGeometry>
+                                </Path.Data>
+                            </Path>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="backgroundEllipse"
+                                        Property="Fill"
+                                        Value="{StaticResource HoverBackgroundBrush}" />
+                                <Setter TargetName="ButtonPath"
+                                        Property="Stroke" 
+                                        Value="{StaticResource HoverForegroundBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter TargetName="backgroundEllipse" Property="Fill"
+                                    Value="{StaticResource PressedBackgroundBrush}" />
+                                <Setter TargetName="backgroundEllipse" Property="Stroke"
+                                    Value="{StaticResource PressedBorderBrush}" />
+                                <Setter TargetName="ButtonPath" Property="Stroke" 
+                                    Value="{StaticResource PressedForegroundBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="InfoLabel" TargetType="{x:Type Label}">
+            <Setter Property="BorderBrush" Value="Black"></Setter>
+            <Setter Property="BorderThickness" Value="1"></Setter>
+            <Setter Property="Background" Value="#FF229393"></Setter>
+            <Setter Property="FontSize" Value="14"></Setter>
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Label}, Path=ActualWidth}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0"
+                                   Source="Images/info.ico"
+                                   VerticalAlignment="Center"
+                                   Margin="2"
+                                   Height="20"></Image>
+                            <Label Grid.Column="1"
+                                   Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Label}, Path=Content}"
+                                   Foreground="White"
+                                   VerticalAlignment="Center"></Label>
+                            <Button Grid.Column="2"
+                                    Height="20"
+                                    Margin="2"
+                                    Style="{StaticResource CrossButton}"
+                                    Command="{Binding ElementName=MainWindow, Path=DataContext.RemoveInfoLabelCommand}"></Button>
+                        </Grid>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
     </Window.Resources>
 
     <Window.DataContext>
@@ -212,7 +320,14 @@
     </Window.DataContext>
 
     <Grid>
-        <TabControl>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="{Binding StatusInformation, Converter={StaticResource StatusToGridHeightConv}}"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0"
+               Style="{StaticResource InfoLabel}"
+               Content="{Binding StatusInformation}"></Label>
+        <TabControl Grid.Row="1">
             <TabItem Header="Video suchen">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -862,13 +977,11 @@
 
                         </StackPanel>
                         <Button Grid.Column="1" Grid.Row="1" Width="150" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                                Margin="10" Command="{Binding AddVideoCommand}">Video hinzufügen</Button>
+                                Margin="10" Command="{Binding AddVideoCommand}" Cursor="Hand">Video hinzufügen</Button>
                     </Grid>
 
 
                     <Rectangle Grid.Row="3" Fill="#FF999999" Opacity="0.7"></Rectangle>
-                    <Label Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" FontSize="15"
-                           Foreground="White" Content="{Binding StatusInformation}"></Label>
                 </Grid>
             </TabItem>
             <TabItem Header="Workouts">

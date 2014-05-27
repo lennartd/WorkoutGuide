@@ -111,6 +111,7 @@
     <Compile Include="RelayCommand.vb" />
     <Compile Include="SearchFeatures.vb" />
     <Compile Include="SelectedWorkoutVisibilityConverter.vb" />
+    <Compile Include="StatusToGridHeightConverter.vb" />
     <Compile Include="TagCheckedConverter.vb" />
     <Compile Include="TimeConverter.vb" />
     <Compile Include="Video.vb" />
@@ -221,6 +222,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\info.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

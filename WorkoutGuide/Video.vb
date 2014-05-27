@@ -271,7 +271,7 @@ Public Class Video
             For i = 0 To MainViewModel.AllWorkouts.Workouts.Count - 1
                 MainViewModel.AllWorkouts.Workouts(i).WorkoutVideos.Videos.Remove(Me)
             Next
-            MsgBox("Das Video """ & VideoTitle & """ wurde erfolgreich entfernt.", MsgBoxStyle.Information, "Video löschen")
+            MainViewModel.StatusInformation = "Das Video """ & VideoTitle & """ wurde erfolgreich entfernt."
         End If
         
     End Sub

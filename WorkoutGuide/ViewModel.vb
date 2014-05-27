@@ -16,6 +16,7 @@ Public Class ViewModel
         CreateAddWorkoutCommand()
         CreateAddVideoToWorkoutCommand()
         CreateDeleteSelectedWorkoutCommand()
+        CreateRemoveInfoLabelCommand()
     End Sub
 
 #Region "Properties"
@@ -607,8 +608,7 @@ Public Class ViewModel
          For Each window As Window In Windows.Application.Current.Windows.OfType (Of AddVideoToWorkoutWindow)()
             window.Close()
         Next
-        MsgBox("""" & SelectedVideo.VideoTitle & """ wurde erfolgreich zu """ & ChosenWorkout.WorkoutTitle & """ hinzugefügt.", MsgBoxStyle.Information, _
-               "Hinzufügen erfolgreich")
+        StatusInformation = """" & SelectedVideo.VideoTitle & """ wurde erfolgreich zu """ & ChosenWorkout.WorkoutTitle & """ hinzugefügt."
     End Sub
 
     'DeleteSelectedWorkoutCommand
@@ -641,6 +641,31 @@ Public Class ViewModel
             AllWorkouts.Workouts.Remove(SelectedWorkout)
             SelectedWorkout = Nothing
         End If
+    End Sub
+
+    'RemoveInfoLabelCommand
+    Private _removeInfoLabelCommand As ICommand
+
+    Public Property RemoveInfoLabelCommand() As ICommand
+        Get
+            Return _removeInfoLabelCommand
+        End Get
+        Set(ByVal value As ICommand)
+            _removeInfoLabelCommand = value
+            RaiseProp("RemoveInfoLabelCommand")
+        End Set
+    End Property
+
+    Private Function CanExecuteRemoveInfoLabelCommand() As Boolean
+        Return True
+    End Function
+
+    Private Sub CreateRemoveInfoLabelCommand()
+        RemoveInfoLabelCommand = New RelayCommand(AddressOf RemoveInfoLabelExecute, AddressOf CanExecuteRemoveInfoLabelCommand)
+    End Sub
+
+    Private Sub RemoveInfoLabelExecute()
+        StatusInformation = Nothing
     End Sub
 #End Region
 
