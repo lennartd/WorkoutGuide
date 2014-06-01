@@ -1,7 +1,8 @@
-﻿Imports System.Net
-Imports System.ComponentModel
+﻿Imports System.ComponentModel
 Imports System.IO
 Imports ProtoBuf
+Imports Google.YouTube
+Imports Google.GData.YouTube
 
 Public Class ViewModel
     Implements INotifyPropertyChanged
@@ -133,40 +134,22 @@ Public Class ViewModel
 
 
     Public Function GetVideo(ByVal url As String, ByVal dateAdded As Date, ByVal rating As Integer, ByVal difficulty As Difficulty, ByVal categories As Categories) As Video
+        Dim videoId As String = url.Split("=")(1)
 
-        Dim sourceString As String = New WebClient().DownloadString(url)
+        Dim settings As New YouTubeRequestSettings("YoutubeAPI", "AIzaSyCEKSGmn79xg-lOxQSgaECmrSYoJxS06iA", "lennart_duemmel@gmx.de", "oberboihingen")
+        Dim request As New YouTubeRequest(settings)
 
-        'Get title
-        Dim splitStringTitleStart As String() = New String() {"<title>"}
-        Dim splitStringTitleEnd As String() = New String() {"</title>"}
-        Dim title As String = CreateSpecialCharacters(sourceString.Split(splitStringTitleStart, StringSplitOptions.None)(1).Split(splitStringTitleEnd, StringSplitOptions.None)(0).Replace(" - YouTube", ""))
+        Dim videoEntryUrl As Uri = New Uri("http://gdata.youtube.com/feeds/api/videos/" & videoId)
+        Dim video As Google.YouTube.Video = request.Retrieve (Of Google.YouTube.Video)(videoEntryUrl)
 
-        'Get author
-        Dim splitStringAuthorStart As String() = New String() {"'SHARE_CAPTION': "}
-        Dim authorArray() As String = sourceString.Split(splitStringAuthorStart, StringSplitOptions.None)(1).Split(" ")
-
-        Dim author As String = ""
-        For i = 2 To authorArray.Length - 1
-
-            author = author & " " & authorArray(i)
+        Dim title As String = video.Title
+        Dim author As String = video.Author
+        Dim description As String = video.Description
+        Dim duration As Integer = Nothing
+        For Each mediaContent As MediaContent In video.Contents
+            duration = mediaContent.Duration 'in sec
         Next
-
-        author = author.Split("""")(0)
-        author = CreateSpecialCharacters(author.Trim)
-
-        'Get description
-        Dim splitStringDescriptionStart As String() = New String() {"<meta name=""description"" content="""}
-        Dim splitStringDescriptionEnd As String() = New String() {""">"}
-        Dim description As String = CreateSpecialCharacters(sourceString.Split(splitStringDescriptionStart, StringSplitOptions.None)(1).Split(splitStringDescriptionEnd, StringSplitOptions.None)(0))
-
-        'Get duration
-        Dim splitStringDurationStart As String() = New String() {"""length_seconds"": "}
-        Dim duration As Integer = CInt(sourceString.Split(splitStringDurationStart, StringSplitOptions.None)(1).Split(",")(0)) 'in sec
-
-        'Get Image-URL
-        Dim splitStringImageUrlStart As String() = New String() {"<meta property=""og:image"" content="""}
-        Dim splitStringImageUrlEnd As String() = New String() {""">"}
-        Dim imageUrl As String = sourceString.Split(splitStringImageUrlStart, StringSplitOptions.None)(1).Split(splitStringImageUrlEnd, StringSplitOptions.None)(0)
+        Dim imageUrl As String = "http://img.youtube.com/vi/" & videoId & "/0.jpg"
 
         Return New Video(url, title, author, description, duration, imageUrl, GetImage(imageUrl), dateAdded, rating, difficulty, categories, True)
     End Function
@@ -180,10 +163,6 @@ Public Class ViewModel
             Return bDecoder.Frames(0)
         End If
         Return Nothing
-    End Function
-
-    Private Function CreateSpecialCharacters(ByVal originalText As String) As String
-        Return originalText.Replace("&#39;", "'")
     End Function
 
     Private Function CheckIfDateIsInRange(ByVal startDate as Date, ByVal endDate As Date, ByVal dateToCheck As Date)

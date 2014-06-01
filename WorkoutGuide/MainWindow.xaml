@@ -11,6 +11,7 @@
         <local:VideoUrlVisibilityConverter x:Key="VideoUrlVisibilityConv"></local:VideoUrlVisibilityConverter>
         <local:SelectedWorkoutVisibilityConverter x:Key="SelectedWorkoutVisibilityConv"></local:SelectedWorkoutVisibilityConverter>
         <local:StatusToGridHeightConverter x:Key="StatusToGridHeightConv"></local:StatusToGridHeightConverter>
+        <local:TextTrimmingConverter x:Key="TextTrimmingConv"></local:TextTrimmingConverter>
 
         <Style x:Key="HyperlinkLikeButton" TargetType="Button">
             <Setter Property="Template">
@@ -310,9 +311,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-
-
+        
     </Window.Resources>
 
     <Window.DataContext>
@@ -734,8 +733,14 @@
 
                                                             <TextBlock Text="{Binding VideoAuthor, StringFormat='von {0}'}"
                                                            FontSize="13" FontWeight="Bold" TextWrapping="Wrap"></TextBlock>
-                                                            <TextBlock Text="{Binding VideoDescription}"
-                                                       FontStyle="Italic" TextWrapping="Wrap"></TextBlock>
+                                                            <TextBlock Text="{Binding VideoDescription, Converter={StaticResource TextTrimmingConv}}"
+                                                       FontStyle="Italic" TextWrapping="Wrap">
+                                                                <TextBlock.ToolTip>
+                                                                    <ToolTip>
+                                                                        <TextBlock Text="{Binding VideoDescription}"></TextBlock>
+                                                                    </ToolTip>
+                                                                </TextBlock.ToolTip>
+                                                            </TextBlock>
                                                         </StackPanel>
                                                     </Viewbox>
 
@@ -908,8 +913,14 @@
 
                                 <TextBlock Text="{Binding NewVideo.VideoAuthor, StringFormat='von {0}'}"
                                                            FontSize="13" FontWeight="Bold" TextWrapping="Wrap"></TextBlock>
-                                <TextBlock Text="{Binding NewVideo.VideoDescription}"
-                                                       FontStyle="Italic" TextWrapping="Wrap"></TextBlock>
+                                <TextBlock Text="{Binding NewVideo.VideoDescription, Converter={StaticResource TextTrimmingConv}}"
+                                                       FontStyle="Italic" TextWrapping="Wrap">
+                                    <TextBlock.ToolTip>
+                                        <ToolTip>
+                                            <TextBlock Text="{Binding NewVideo.VideoDescription}"></TextBlock>
+                                        </ToolTip>
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
                             </StackPanel>
                         </Viewbox>
                     </Grid>
@@ -1185,8 +1196,14 @@
 
                                                     <TextBlock Text="{Binding VideoAuthor, StringFormat='von {0}'}"
                                                            FontSize="13" FontWeight="Bold" TextWrapping="Wrap"></TextBlock>
-                                                    <TextBlock Text="{Binding VideoDescription}"
-                                                       FontStyle="Italic" TextWrapping="Wrap"></TextBlock>
+                                                    <TextBlock Text="{Binding VideoDescription, Converter={StaticResource TextTrimmingConv}}"
+                                                       FontStyle="Italic" TextWrapping="Wrap">
+                                                        <TextBlock.ToolTip>
+                                                            <ToolTip>
+                                                                <TextBlock Text="{Binding VideoDescription}"></TextBlock>
+                                                            </ToolTip>
+                                                        </TextBlock.ToolTip>
+                                                    </TextBlock>
                                                 </StackPanel>
                                             </Viewbox>
                                         </Grid>
