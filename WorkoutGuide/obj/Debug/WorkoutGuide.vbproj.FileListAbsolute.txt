@@ -36,3 +36,5 @@ C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuid
 C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\SettingsWindow.g.vb
 C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\WatchVideoWindow.g.vb
 C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\WatchVideoWindow.baml
+C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\EditSelectedWorkoutWindow.g.vb
+C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\EditSelectedWorkoutWindow.baml

@@ -19,6 +19,7 @@ Public Class ViewModel
         CreateDeleteSelectedWorkoutCommand()
         CreateRemoveInfoLabelCommand()
         CreateOpenSettingsWindowCommand()
+        CreateOpenEditSelectedWorkoutWindowCommand()
     End Sub
 
 #Region "Properties"
@@ -644,6 +645,7 @@ Public Class ViewModel
                                             MsgBoxStyle.YesNoCancel, "Workout löschen")
         If result = MsgBoxResult.Yes
             AllWorkouts.Workouts.Remove(SelectedWorkout)
+            StatusInformation = "Das Workout """ & SelectedWorkout.WorkoutTitle & """ wurde erfolgreich entfernt."
             SelectedWorkout = Nothing
         End If
     End Sub
@@ -696,6 +698,35 @@ Public Class ViewModel
 
     Private Sub OpenSettingsWindowExecute()
         Dim w As New SettingsWindow
+        w.Show()
+    End Sub
+
+    'OpenEditSelectedWorkoutWindowCommand
+    Private _openEditSelectedWorkoutWindowCommand As ICommand
+
+    Public Property OpenEditSelectedWorkoutWindowCommand() As ICommand
+        Get
+            Return _openEditSelectedWorkoutWindowCommand
+        End Get
+        Set(ByVal value As ICommand)
+            _openEditSelectedWorkoutWindowCommand = value
+            RaiseProp("OpenEditSelectedWorkoutWindowCommand")
+        End Set
+    End Property
+
+    Private Function CanExecuteOpenEditSelectedWorkoutWindowCommand() As Boolean
+        If SelectedWorkout Is Nothing
+            Return False
+        End If
+        Return True
+    End Function
+
+    Private Sub CreateOpenEditSelectedWorkoutWindowCommand()
+        OpenEditSelectedWorkoutWindowCommand = New RelayCommand(AddressOf OpenEditSelectedWorkoutWindowExecute, AddressOf CanExecuteOpenEditSelectedWorkoutWindowCommand)
+    End Sub
+
+    Private Sub OpenEditSelectedWorkoutWindowExecute()
+        Dim w as New EditSelectedWorkoutWindow
         w.Show()
     End Sub
 #End Region

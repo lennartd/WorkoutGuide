@@ -22,6 +22,14 @@ InitializeComponent
 	<summary>
 SettingsWindow
 </summary>
+</member><member name="M:WorkoutGuide.EditSelectedWorkoutWindow.InitializeComponent">
+	<summary>
+InitializeComponent
+</summary>
+</member><member name="T:WorkoutGuide.EditSelectedWorkoutWindow">
+	<summary>
+EditSelectedWorkoutWindow
+</summary>
 </member><member name="M:WorkoutGuide.RatingControl.InitializeComponent">
 	<summary>
 InitializeComponent

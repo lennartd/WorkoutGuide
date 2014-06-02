@@ -115,6 +115,9 @@
     <Compile Include="DateAdded.vb" />
     <Compile Include="Difficulty.vb" />
     <Compile Include="Duration.vb" />
+    <Compile Include="EditSelectedWorkoutWindow.xaml.vb">
+      <DependentUpon>EditSelectedWorkoutWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MyCommand.vb" />
     <Compile Include="PublicVariablesContainer.vb" />
     <Compile Include="RatingControl.xaml.vb">
@@ -147,6 +150,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddVideoToWorkoutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditSelectedWorkoutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -228,9 +235,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\plus.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
@@ -248,9 +252,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\delete.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -261,6 +262,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\settings2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\delete.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\plus.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\edit.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

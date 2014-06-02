@@ -20,6 +20,9 @@ Public Class Workout
             Return _title
         End Get
         Set(ByVal value As String)
+            If [String].IsNullOrEmpty(value) Then
+	            Throw New Exception("Titel kann nicht leer sein.")
+            End If
             _title = value
             RaiseProp("WorkoutTitle")
         End Set
