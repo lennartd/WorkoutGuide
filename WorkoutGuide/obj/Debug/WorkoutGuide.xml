@@ -14,6 +14,14 @@ InitializeComponent
 	<summary>
 MainWindow
 </summary>
+</member><member name="M:WorkoutGuide.SettingsWindow.InitializeComponent">
+	<summary>
+InitializeComponent
+</summary>
+</member><member name="T:WorkoutGuide.SettingsWindow">
+	<summary>
+SettingsWindow
+</summary>
 </member><member name="M:WorkoutGuide.RatingControl.InitializeComponent">
 	<summary>
 InitializeComponent
@@ -21,6 +29,14 @@ InitializeComponent
 </member><member name="T:WorkoutGuide.RatingControl">
 	<summary>
 RatingControl
+</summary>
+</member><member name="M:WorkoutGuide.WatchVideoWindow.InitializeComponent">
+	<summary>
+InitializeComponent
+</summary>
+</member><member name="T:WorkoutGuide.WatchVideoWindow">
+	<summary>
+WatchVideoWindow
 </summary>
 </member><member name="M:WorkoutGuide.AddNewWorkoutWindow.InitializeComponent">
 	<summary>

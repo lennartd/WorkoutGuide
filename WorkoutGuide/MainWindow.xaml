@@ -312,6 +312,57 @@
             </Setter>
         </Style>
         
+        <Style x:Key="SettingsButton" TargetType="{x:Type Button}">
+            <Setter Property="Cursor" Value="Hand"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Image x:Name="SettingsImage" Source="Images/settings.ico"></Image>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <EventTrigger.Actions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SettingsImage" Storyboard.TargetProperty="(Image.Source)">
+                                                <DiscreteObjectKeyFrame KeyTime="00:00:00">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <BitmapImage UriSource="Images/settings2.ico" />
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                                </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <EventTrigger.Actions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SettingsImage" Storyboard.TargetProperty="(Image.Source)">
+                                                <DiscreteObjectKeyFrame KeyTime="00:00:00">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <BitmapImage UriSource="Images/settings.ico" />
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ToolTip">
+                <Setter.Value>
+                    <ToolTip>
+                        <TextBlock>Einstellungen</TextBlock>
+                    </ToolTip>
+                </Setter.Value>
+            </Setter>
+            
+        </Style>
+        
     </Window.Resources>
 
     <Window.DataContext>
@@ -334,6 +385,13 @@
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
 
+                    <Button Grid.Row="0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Margin="0,0,10,0"
+                            Width="20"
+                            Style="{StaticResource SettingsButton}"
+                            Command="{Binding OpenSettingsWindowCommand}"></Button>
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1.1*"></ColumnDefinition>

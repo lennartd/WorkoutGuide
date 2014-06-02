@@ -121,8 +121,13 @@
       <DependentUpon>RatingControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="RelayCommand.vb" />
+    <Compile Include="ReverseBooleanConverter.vb" />
     <Compile Include="SearchFeatures.vb" />
     <Compile Include="SelectedWorkoutVisibilityConverter.vb" />
+    <Compile Include="Settings.vb" />
+    <Compile Include="SettingsWindow.xaml.vb">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="StatusToGridHeightConverter.vb" />
     <Compile Include="TagCheckedConverter.vb" />
     <Compile Include="TextTrimmingConverter.vb" />
@@ -131,6 +136,10 @@
     <Compile Include="VideoUrlVisibilityConverter.vb" />
     <Compile Include="ViewModel.vb" />
     <Compile Include="VideosList.vb" />
+    <Compile Include="WatchVideoWindow.xaml.vb">
+      <DependentUpon>WatchVideoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WebBrowserUtility.vb" />
     <Compile Include="Workout.vb" />
     <Compile Include="WorkoutsList.vb" />
     <Page Include="AddNewWorkoutWindow.xaml">
@@ -154,6 +163,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="RatingControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WatchVideoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -238,6 +255,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\info.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\settings.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\settings2.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

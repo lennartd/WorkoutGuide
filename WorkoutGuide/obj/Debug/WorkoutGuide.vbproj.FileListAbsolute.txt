@@ -32,3 +32,7 @@ C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuid
 C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\bin\Debug\Google.GData.Extensions.dll
 C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\bin\Debug\Google.GData.YouTube.dll
 C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\SettingsWindow.baml
+C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\SettingsWindow.g.vb
+C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\WatchVideoWindow.g.vb
+C:\Users\Anwender\Documents\Lennart\Programmieren\Visual Studio 2012\WorkoutGuide\WorkoutGuide\obj\Debug\WatchVideoWindow.baml

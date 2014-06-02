@@ -15,6 +15,7 @@
         MainViewModel.NewWorkout = New Workout()
         MainViewModel.ChosenWorkout = New Workout()
         MainViewModel.SelectedVideo = New Video()
+        MainViewModel.AllSettings = New Settings()
 
         MainViewModel.LoadFromBinary()
 

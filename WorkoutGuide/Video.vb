@@ -14,9 +14,9 @@ Public Class Video
     Public Sub New(ByVal url As String, ByVal title As String, ByVal author As String, ByVal description As String, ByVal duration As Integer, _
                    ByVal imageUrl As String, _
                    ByVal image As Windows.Media.ImageSource, ByVal dateAdded As Date, ByVal rating As Integer, ByVal difficulty As Difficulty, _
-                   ByVal categories As Categories, ByVal urlOk As Boolean)
+                   ByVal categories As Categories, ByVal urlOk As Boolean, ByVal embedUrl As String)
         _url = url : _title = title : _author = author : _description = description : _duration = duration : _image = image : _dateAdded = dateAdded
-        _rating = rating : _difficulty = difficulty : _categories = categories : _urlOk = urlOk : _imageUrl = imageUrl
+        _rating = rating : _difficulty = difficulty : _categories = categories : _urlOk = urlOk : _imageUrl = imageUrl : _embedUrl = embedUrl
 
 
         CreateOpenLinkCommand()
@@ -183,6 +183,18 @@ Public Class Video
         End Set
     End Property
 
+    Private _embedUrl As String
+    <ProtoMember(12)> _
+    Public Property VideoEmbedUrl() As String
+        Get
+            Return _embedUrl
+        End Get
+        Set(ByVal value As String)
+            _embedUrl = value
+            RaiseProp("VideoEmbedUrl")
+        End Set
+    End Property
+
 
     #Region "Commands"
         
@@ -210,7 +222,14 @@ Public Class Video
         End Sub
 
         Private Sub OpenLinkExecute
-            Process.Start(VideoUrl)
+            If MainViewModel.AllSettings.SettingsOpenVideoInBrowser = True
+                Process.Start(VideoUrl)
+            Else
+                MainViewModel.SelectedVideo = Me
+                Dim w As New WatchVideoWindow
+                w.Show()
+            End If
+            
         End Sub
 
         'OpenAddVideoToWorkoutWindowCommand

@@ -1,0 +1,15 @@
+﻿<Window x:Class="WatchVideoWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:WorkoutGuide"    
+    Title="{Binding SelectedVideo.VideoTitle}" Height="315" Width="560">
+    
+    <Window.DataContext>
+        <local:ViewModel></local:ViewModel>
+    </Window.DataContext>
+    
+    <Grid Background="Black">
+        <WebBrowser x:Name="WebBrowser"
+                    local:WebBrowserUtility.BindableSource="{Binding SelectedVideo.VideoEmbedUrl}"></WebBrowser>
+    </Grid>
+</Window>

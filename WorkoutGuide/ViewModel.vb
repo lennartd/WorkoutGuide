@@ -18,6 +18,7 @@ Public Class ViewModel
         CreateAddVideoToWorkoutCommand()
         CreateDeleteSelectedWorkoutCommand()
         CreateRemoveInfoLabelCommand()
+        CreateOpenSettingsWindowCommand()
     End Sub
 
 #Region "Properties"
@@ -130,6 +131,17 @@ Public Class ViewModel
             RaiseProp("ChosenWorkout")
         End Set
     End Property
+
+    Private _allSettings As Settings
+    Public Property AllSettings() As Settings
+        Get
+            Return _allSettings
+        End Get
+        Set(ByVal value As Settings)
+            _allSettings = value
+            RaiseProp("Settings")
+        End Set
+    End Property
 #End Region
 
 
@@ -150,8 +162,14 @@ Public Class ViewModel
             duration = mediaContent.Duration 'in sec
         Next
         Dim imageUrl As String = "http://img.youtube.com/vi/" & videoId & "/0.jpg"
+        Dim embedUrl As String = Nothing
+' ReSharper disable once LoopCanBeConvertedToQuery
+        For Each mediaContent As MediaContent In video.Contents
+            embedUrl = mediaContent.Url
+            Exit For 
+        Next
 
-        Return New Video(url, title, author, description, duration, imageUrl, GetImage(imageUrl), dateAdded, rating, difficulty, categories, True)
+        Return New Video(url, title, author, description, duration, imageUrl, GetImage(imageUrl), dateAdded, rating, difficulty, categories, True, embedUrl)
     End Function
 
     Private Function GetImage(ByVal imageUrl As String) As Windows.Media.ImageSource
@@ -184,6 +202,9 @@ Public Class ViewModel
         Using file2 = File.Create(FilesDirectory & "\AllWorkouts.bin")
             Serializer.Serialize(file2, AllWorkouts)
         End Using
+        Using file3 = File.Create(FilesDirectory & "\AllSettings.bin")
+            Serializer.Serialize(file3, AllSettings)
+        End Using
     End Sub
 
     Public Sub LoadFromBinary()
@@ -204,6 +225,11 @@ Public Class ViewModel
                     AllWorkouts.Workouts(i).WorkoutVideos.Videos(j).VideoImage = GetImage(AllWorkouts.Workouts(i).WorkoutVideos.Videos(j).VideoImageUrl)
                 Next
             Next
+        End If
+        If File.Exists(FilesDirectory & "\AllSettings.bin")
+            Using file3 = File.OpenRead(FilesDirectory & "\AllSettings.bin")
+	            AllSettings = Serializer.Deserialize(Of Settings)(file3)
+            End Using
         End If
     End Sub
 
@@ -645,6 +671,32 @@ Public Class ViewModel
 
     Private Sub RemoveInfoLabelExecute()
         StatusInformation = Nothing
+    End Sub
+
+    'OpenSettingsWindowCommand
+    Private _openSettingsWindowCommand As ICommand
+
+    Public Property OpenSettingsWindowCommand() As ICommand
+        Get
+            Return _openSettingsWindowCommand
+        End Get
+        Set(ByVal value As ICommand)
+            _openSettingsWindowCommand = value
+            RaiseProp("OpenSettingsWindowCommand")
+        End Set
+    End Property
+
+    Private Function CanExecuteOpenSettingsWindowCommand() As Boolean
+        Return Not Windows.Application.Current.Windows.OfType (Of SettingsWindow)().Any()
+    End Function
+
+    Private Sub CreateOpenSettingsWindowCommand()
+        OpenSettingsWindowCommand = New RelayCommand(AddressOf OpenSettingsWindowExecute, AddressOf CanExecuteOpenSettingsWindowCommand)
+    End Sub
+
+    Private Sub OpenSettingsWindowExecute()
+        Dim w As New SettingsWindow
+        w.Show()
     End Sub
 #End Region
 
