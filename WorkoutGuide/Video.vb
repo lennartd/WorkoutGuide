@@ -222,6 +222,10 @@ Public Class Video
         End Sub
 
         Private Sub OpenLinkExecute
+            If MainViewModel.InternetConnection = False
+                MainViewModel.StatusInformation = MainViewModel.InternetErrorMessage
+                Exit Sub
+            End If
             If MainViewModel.AllSettings.SettingsOpenVideoInBrowser = True
                 Process.Start(VideoUrl)
             Else

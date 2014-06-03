@@ -3,6 +3,7 @@ Imports System.IO
 Imports ProtoBuf
 Imports Google.YouTube
 Imports Google.GData.YouTube
+Imports System.Windows.Threading
 
 Public Class ViewModel
     Implements INotifyPropertyChanged
@@ -20,6 +21,12 @@ Public Class ViewModel
         CreateRemoveInfoLabelCommand()
         CreateOpenSettingsWindowCommand()
         CreateOpenEditSelectedWorkoutWindowCommand()
+        CreateReloadPicturesCommand()
+
+        Dim timer As DispatcherTimer = New DispatcherTimer()
+        AddHandler timer.Tick, AddressOf Timer_Tick
+        timer.Interval = new TimeSpan(0,0,1)
+        timer.Start()
     End Sub
 
 #Region "Properties"
@@ -143,6 +150,17 @@ Public Class ViewModel
             RaiseProp("Settings")
         End Set
     End Property
+
+    Private _internetConnection As Boolean
+    Public Property InternetConnection() As Boolean
+        Get
+            Return _internetConnection
+        End Get
+        Set(ByVal value As Boolean)
+            _internetConnection = value
+            RaiseProp("InternetConnection")
+        End Set
+    End Property
 #End Region
 
 
@@ -233,6 +251,62 @@ Public Class ViewModel
             End Using
         End If
     End Sub
+
+    Private Sub ReloadPictures()
+        for i = 0 to AllVideos.Videos.Count - 1
+                    AllVideos.Videos(i).VideoImage = GetImage(AllVideos.Videos(i).VideoImageUrl)
+        Next
+        for i = 0 To AllWorkouts.Workouts.Count - 1
+            for j = 0 To AllWorkouts.Workouts(i).WorkoutVideos.Videos.Count - 1
+                AllWorkouts.Workouts(i).WorkoutVideos.Videos(j).VideoImage = GetImage(AllWorkouts.Workouts(i).WorkoutVideos.Videos(j).VideoImageUrl)
+            Next
+        Next
+        for i = 0 To SearchedVideos.Videos.Count - 1
+            SearchedVideos.Videos(i).VideoImage = GetImage(SearchedVideos.Videos(i).VideoImageUrl)
+        Next
+    End Sub
+
+#Region "Check Internet Connection"
+
+    Public Const InternetErrorMessage As String = "Keine Internetverbindung erkannt. Workout Guide versucht automatisch eine neue Verbindung herzustellen."
+
+    Private Declare Function InternetGetConnectedState Lib _
+            "wininet.dll" (ByRef lpSFlags As Int32, _
+            ByVal dwReserved As Int32) As Boolean
+
+    Private Sub Timer_Tick(ByVal sender As Object, ByVal e As EventArgs)
+        
+        If AllVideos Is Nothing Or SearchedVideos Is Nothing Or AllWorkouts Is Nothing
+            Exit Sub
+        End If
+
+        If CheckInternetConnection() = False
+            If InternetConnection = True
+                InternetConnection = False
+                StatusInformation = InternetErrorMessage
+            End If
+        Else 
+            If InternetConnection = False
+                InternetConnection = True
+                System.Threading.Thread.Sleep(3000)
+                ReloadPictures()
+                StatusInformation = "Verbindung zum Internet wurde wieder hergestellt."
+            End If
+        End If
+    End Sub
+
+    Private Function CheckInternetConnection() As Boolean
+        Dim lngFlags As Long
+        If InternetGetConnectedState(lngFlags, 0) Then
+            ' True
+            Return True
+        Else
+            ' False
+            Return False
+        End If
+    End Function
+
+#End Region
 
 #Region "Commands"
     'AdjustSearchResultsCommand
@@ -423,6 +497,9 @@ Public Class ViewModel
                                 New Categories(False, False, False, False, False, False, False, False, False, False)) 
         Catch
             NewVideo.VideoUrlOk = False
+            If InternetConnection = False
+                StatusInformation = InternetErrorMessage
+            End If
         End Try
         
     End Sub
@@ -587,7 +664,6 @@ Public Class ViewModel
 
     'AddVideoToWorkoutCommand
     Private _addVideoToWorkoutCommand As ICommand
-
     Public Property AddVideoToWorkoutCommand() As ICommand
         Get
             Return _addVideoToWorkoutCommand
@@ -652,7 +728,6 @@ Public Class ViewModel
 
     'RemoveInfoLabelCommand
     Private _removeInfoLabelCommand As ICommand
-
     Public Property RemoveInfoLabelCommand() As ICommand
         Get
             Return _removeInfoLabelCommand
@@ -677,7 +752,6 @@ Public Class ViewModel
 
     'OpenSettingsWindowCommand
     Private _openSettingsWindowCommand As ICommand
-
     Public Property OpenSettingsWindowCommand() As ICommand
         Get
             Return _openSettingsWindowCommand
@@ -703,7 +777,6 @@ Public Class ViewModel
 
     'OpenEditSelectedWorkoutWindowCommand
     Private _openEditSelectedWorkoutWindowCommand As ICommand
-
     Public Property OpenEditSelectedWorkoutWindowCommand() As ICommand
         Get
             Return _openEditSelectedWorkoutWindowCommand
@@ -729,6 +802,37 @@ Public Class ViewModel
         Dim w as New EditSelectedWorkoutWindow
         w.Show()
     End Sub
+
+    'ReloadPicturesCommand
+    Private _reloadPicturesCommand As ICommand
+    Public Property ReloadPicturesCommand() As ICommand
+        Get
+            Return _reloadPicturesCommand
+        End Get
+        Set(ByVal value As ICommand)
+            _reloadPicturesCommand = value
+            RaiseProp("ReloadPicturesCommand")
+        End Set
+    End Property
+
+    Private Function CanExecuteReloadPicturesCommand() As Boolean
+        If AllVideos Is Nothing Or SearchedVideos Is Nothing Or AllWorkouts Is Nothing
+            Return False
+        End If
+        If InternetConnection = True
+            Return True
+        End If
+        Return False
+    End Function
+
+    Private Sub CreateReloadPicturesCommand()
+        ReloadPicturesCommand = New RelayCommand(AddressOf ReloadPicturesExecute, AddressOf CanExecuteReloadPicturesCommand)
+    End Sub
+
+    Private Sub ReloadPicturesExecute()
+        ReloadPictures()
+        StatusInformation = "Bilder wurden erfolgreich neu geladen."
+    End Sub
 #End Region
 
     Public Sub RaiseProp(ByVal propertie As String)
@@ -736,5 +840,24 @@ Public Class ViewModel
     End Sub
 
     Public Event PropertyChanged(sender As Object, e As PropertyChangedEventArgs) Implements INotifyPropertyChanged.PropertyChanged
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 End Class
 

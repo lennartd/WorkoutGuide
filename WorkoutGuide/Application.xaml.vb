@@ -17,6 +17,8 @@
         MainViewModel.SelectedVideo = New Video()
         MainViewModel.AllSettings = New Settings()
 
+        MainViewModel.InternetConnection = True
+
         MainViewModel.LoadFromBinary()
 
         'SetTestData()

@@ -687,7 +687,15 @@
                                              IsSelected="{Binding SearchCaracteristics.SearchFeaturesDateAdded.DateAddedDoesntMatter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
                                         </ListBox>
                                         <Button Margin="10"
-                                                Command="{Binding ResetSearchCommand}">Zurücksetzen</Button>
+                                                Content="Zurücksetzen"
+                                                Cursor="Hand"
+                                                Command="{Binding ResetSearchCommand}">
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock>Sucheinstellungen zurücksetzen</TextBlock>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
                                     </StackPanel>
                                 </Viewbox>
                             </Border>
