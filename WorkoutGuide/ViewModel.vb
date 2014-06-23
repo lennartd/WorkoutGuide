@@ -173,6 +173,7 @@ Public Class ViewModel
         Dim videoEntryUrl As Uri = New Uri("http://gdata.youtube.com/feeds/api/videos/" & videoId)
         Dim video As Google.YouTube.Video = request.Retrieve (Of Google.YouTube.Video)(videoEntryUrl)
 
+        videoId = video.VideoId
         Dim title As String = video.Title
         Dim author As String = video.Author
         Dim description As String = video.Description
@@ -188,7 +189,7 @@ Public Class ViewModel
             Exit For 
         Next
 
-        Return New Video(url, title, author, description, duration, imageUrl, GetImage(imageUrl), dateAdded, rating, difficulty, categories, True, embedUrl)
+        Return New Video(videoId, url, title, author, description, duration, imageUrl, GetImage(imageUrl), dateAdded, rating, difficulty, categories, True, embedUrl)
     End Function
 
     Private Function GetImage(ByVal imageUrl As String) As Windows.Media.ImageSource

@@ -11,18 +11,30 @@ Public Class Video
         CreateDeleteVideoCommand()
     End Sub
 
-    Public Sub New(ByVal url As String, ByVal title As String, ByVal author As String, ByVal description As String, ByVal duration As Integer, _
-                   ByVal imageUrl As String, _
+    Public Sub New(ByVal id As String, ByVal url As String, ByVal title As String, ByVal author As String, ByVal description As String, _
+                   ByVal duration As Integer, ByVal imageUrl As String, _
                    ByVal image As Windows.Media.ImageSource, ByVal dateAdded As Date, ByVal rating As Integer, ByVal difficulty As Difficulty, _
                    ByVal categories As Categories, ByVal urlOk As Boolean, ByVal embedUrl As String)
         _url = url : _title = title : _author = author : _description = description : _duration = duration : _image = image : _dateAdded = dateAdded
         _rating = rating : _difficulty = difficulty : _categories = categories : _urlOk = urlOk : _imageUrl = imageUrl : _embedUrl = embedUrl
+        _id = id
 
 
         CreateOpenLinkCommand()
         CreateOpenAddVideoToWorkoutWindowCommand()
         CreateDeleteVideoCommand()
     End Sub
+
+    Private _id As String
+    Public Property VideoId() As String
+        Get
+            Return _id
+        End Get
+        Set(ByVal value As String)
+            _id = value
+            RaiseProp("VideoId")
+        End Set
+    End Property
 
     Private _url As String
     <ProtoMember(1)> _
@@ -223,7 +235,7 @@ Public Class Video
 
         Private Sub OpenLinkExecute
             If MainViewModel.InternetConnection = False
-                MainViewModel.StatusInformation = MainViewModel.InternetErrorMessage
+                MainViewModel.StatusInformation = ViewModel.InternetErrorMessage
                 Exit Sub
             End If
             If MainViewModel.AllSettings.SettingsOpenVideoInBrowser = True
